@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>org.excalibur.join</groupId>
-  <artifactId>Join-archetype</artifactId>
+  <artifactId>quickstart-archetype</artifactId>
   <versioning>
     <versions>
       <version>0.0.1-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20130503070722</lastUpdated>
+    <lastUpdated>20130504052413</lastUpdated>
   </versioning>
 </metadata>

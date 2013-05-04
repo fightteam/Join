@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.excalibur.join</groupId>
-  <artifactId>Join-archetype</artifactId>
+  <artifactId>quickstart-archetype</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
-  <name>Join-archetype</name>
- <distributionManagement>
+  <name>quickstart-archetype</name>
+<distributionManagement>
         <repository>
             <id>internal.repo</id>
             <name>Temporary Staging Repository</name>
