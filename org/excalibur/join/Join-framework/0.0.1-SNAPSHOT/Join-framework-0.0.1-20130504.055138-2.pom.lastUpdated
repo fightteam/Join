@@ -1,0 +1,12 @@
+#NOTE: This is an internal implementation file, its format can be changed without prior notice.
+#Fri May 10 12:22:04 CST 2013
+default-https\://raw.github.com/fightteam/Join/mvn-repo/.lastUpdated=1368159724564
+https\://oss.sonatype.org/content/repositories/releases/.lastUpdated=1368157639504
+http\://repo.maven.apache.org/maven2/.lastUpdated=1368157636066
+default-http\://raw.github.com/fightteam/Join/mvn-repo/.lastUpdated=1368158666860
+http\://repo.maven.apache.org/maven2/.error=
+http\://maven.springframework.org/milestone/.lastUpdated=1368157636854
+https\://raw.github.com/fightteam/Join/mvn-repo/.error=Could not transfer artifact org.excalibur.join\:Join-framework\:pom\:0.0.1-20130504.055138-2 from/to excalibur-Join-mvn-repo (https\://raw.github.com/fightteam/Join/mvn-repo/)\: Checksum validation failed, expected d6d9dea51546dbe5fbad13940ac4a45613950c70 but is 93fa1d2399c98ac742da15e4759c2180b03ce1b8
+https\://oss.sonatype.org/content/repositories/releases/.error=
+http\://maven.springframework.org/milestone/.error=
+http\://raw.github.com/fightteam/Join/mvn-repo/.error=Could not transfer artifact org.excalibur.join\:Join-framework\:pom\:0.0.1-20130504.055138-2 from/to excalibur-Join-mvn-repo (http\://raw.github.com/fightteam/Join/mvn-repo/)\: Checksum validation failed, expected d6d9dea51546dbe5fbad13940ac4a45613950c70 but is 93fa1d2399c98ac742da15e4759c2180b03ce1b8
