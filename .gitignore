@@ -2,4 +2,11 @@
 ## idea
 #################
 .idea
-*.impl
+*.iml
+
+
+#################
+## github
+#################
+.gitignore
+.gitattributes
