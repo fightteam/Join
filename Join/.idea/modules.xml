@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Join.iml" filepath="$PROJECT_DIR$/Join.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/extension/Join-extension.iml" filepath="$PROJECT_DIR$/modules/extension/Join-extension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/framework/Join-framework.iml" filepath="$PROJECT_DIR$/modules/framework/Join-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/parent/Join-parent.iml" filepath="$PROJECT_DIR$/modules/parent/Join-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/test/Join-test.iml" filepath="$PROJECT_DIR$/modules/test/Join-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/examples.iml" filepath="$PROJECT_DIR$/examples/examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/fullstart/fullstart.iml" filepath="$PROJECT_DIR$/examples/fullstart/fullstart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/modules.iml" filepath="$PROJECT_DIR$/modules/modules.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/quickstart/quickstart.iml" filepath="$PROJECT_DIR$/examples/quickstart/quickstart.iml" />
+    </modules>
+  </component>
+</project>
+
