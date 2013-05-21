@@ -1,6 +1,6 @@
-# Animate.less
+# Join
 
-»ùÓÚcss3µÄ³£ÓÃ¶¯»­£¬¸ù¾İanimate¸ÄÓÃless£¬ÎªÁË·½±ãlessÓÃ»§µÄÊ¹ÓÃ¡£
+åŸºäºspringmvc çš„ä¸€ä¸ªåŸºç¡€é…ç½®ï¼Œå¯ä»¥å¾ˆæ–¹ä¾¿çš„å¼€å‘ç³»ç»Ÿã€‚
 ## Getting Started
 
 
