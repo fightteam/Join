@@ -9,15 +9,14 @@
 >
 
 ## Getting Started
->
->####安装JDK
->####安装maven
 
->本地安装与网络使用
->
->>
->>
->>
+####安装JDK
+####安装maven
+
+本地安装与网络使用
+
+
+
 
 ## Documentation
 _(Coming soon)_
