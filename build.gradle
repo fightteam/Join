@@ -1,0 +1,278 @@
+apply plugin: "base"
+buildscript {
+    // 仓库配置
+ 	repositories {
+        mavenLocal()
+        mavenCentral()
+	}
+	dependencies {
+
+    }
+}
+// 一些简单的配置参数
+// -----------------------------
+// jar包版本依赖在gradle.properties中管理
+ext {
+    gradleScriptDir = "${rootProject.projectDir}/gradle"
+}
+// 所有项目共同的配置
+// -----------------------
+// 项目编译参数设置、依赖等等
+configure(allprojects) {
+    apply plugin: "java"
+    apply plugin: "idea"
+    apply plugin: "eclipse"
+    apply from: "${gradleScriptDir}/ide.gradle"
+
+    group "org.fightteam.avlon"
+
+    configurations.all {
+        // 不缓存模块的改动
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+
+        // 使所有的spring framework 库依赖版本统一
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'org.springframework') {
+                details.useVersion "$springVersion"
+            }
+        }
+        // 排除spring库中使用的common org.fightteam.join.log api
+        exclude group: "commons-logging"
+        exclude module: "slf4j-log4j12"
+    }
+
+    // 项目构建JDK版本
+    project.sourceCompatibility = 1.7
+    project.targetCompatibility = 1.7
+
+    // 编译参数
+    [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:none", "-g"]
+    [compileJava, javadoc, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    // 仓库
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://repo.springsource.org/libs-snapshot" }
+        maven {
+            url 'http://repo.spring.io/milestone'
+        }
+    }
+
+    dependencies {
+
+    }
+}
+
+// 子项目共同的配置
+// ----------------------
+// 主要是javadoc的生成
+configure(subprojects) { subproject ->
+    apply from: "${gradleScriptDir}/maven.gradle"
+
+    javadoc {
+        options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+        options.author = true
+        options.encoding = "UTF-8"
+        options.header = subproject.name
+        //options.overview = "${projectDir}/src/api/overview.html"
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = "sources"
+        from sourceSets.main.allJava
+    }
+    task javadocJar(type: Jar) {
+        classifier = "javadoc"
+        from javadoc
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+}
+
+
+project("join-log") {
+    apply plugin: "maven"
+
+    description = "join franewirk loggin module."
+
+    dependencies {
+        // Logging
+        compile "org.slf4j:slf4j-api:$slf4jVersion"
+//        runtime "ch.qos.logback:logback-classic:$logbackVersion"
+
+        runtime "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+        runtime "org.apache.logging.log4j:log4j-core:$log4jVersion"
+
+        // Testing
+        testCompile "junit:junit:$junitVersion"
+        testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
+    }
+}
+
+
+
+project("join-test") {
+    apply plugin: "maven"
+
+    description = "oin franewirk junit test module."
+
+    dependencies {
+        compile project(":join-log")
+
+        // Testing
+        compile "junit:junit:$junitVersion"
+        compile "org.hamcrest:hamcrest-library:$hamcrestVersion"
+        compile "org.hsqldb:hsqldb:$hsqldbVersion"
+
+    }
+}
+project("join-core") {
+    apply plugin: "maven"
+
+    description = "join franewirk core module."
+
+    dependencies {
+        compile project(":join-log")
+        // Testing
+        testCompile project(":join-test")
+
+        // Spring
+        compile "org.springframework:spring-aop:$springVersion"
+        compile "org.springframework:spring-core:$springVersion"
+        compile "org.springframework:spring-beans:$springVersion"
+        compile "org.springframework:spring-tx:$springVersion"
+        runtime "cglib:cglib-nodep:$cglibVersion"
+
+
+    }
+
+}
+
+project("join-dao") {
+    apply plugin: "maven"
+
+    description = "join franewirk dao module."
+
+    dependencies {
+        compile project(":join-log")
+        // Testing
+        testCompile project(":join-test")
+
+    }
+
+}
+
+project("join-auth") {
+    apply plugin: "maven"
+
+    description = "join franewirk auth module."
+
+    dependencies {
+        compile project(":join-log")
+        // Testing
+        testCompile project(":join-test")
+
+    }
+
+}
+
+project("join-web") {
+    apply plugin: "maven"
+
+    description = "join franewirk web module."
+
+    dependencies {
+        compile project(":join-log")
+        // Testing
+        testCompile project(":join-test")
+
+    }
+
+}
+// 根项目配置
+// ---------------------
+// 主要是文档等的生成。
+configure(rootProject) {
+
+
+  	description = "Avalon Exporter"
+
+
+  	// 根项目不生成jar
+	configurations.archives.artifacts.clear()
+
+
+	task api(type: Javadoc) {
+	    group = "Documentation"
+	    description = "Generates aggregated Javadoc API documentation."
+	    title = "${rootProject.description} ${version} API"
+
+	    options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+	    options.author = true
+	    options.header = rootProject.description
+	    options.overview = "src/api/overview.html"
+	    options.splitIndex = true
+	    options.encoding = "UTF-8"
+	    options.linksOffline "http://docs.oracle.com/javase/6/docs/api/", "http://docs.oracle.com/javase/6/docs/api/"
+	    options.linksOffline "http://static.springsource.org/spring/docs/3.1.x/javadoc-api/", "http://static.springsource.org/spring/docs/3.1.x/javadoc-api/"
+	    options.linksOffline "http://static.springsource.org/spring-data/data-commons/docs/current/api/", "http://static.springsource.org/spring-data/data-commons/docs/current/api/"
+
+	    source subprojects.collect { project ->
+	      project.sourceSets.main.allJava
+	    }
+
+	    destinationDir = new File(buildDir, "api")
+	    classpath = files(subprojects.collect { project ->
+	      project.sourceSets.main.compileClasspath
+	    })
+	    maxMemory = "1024m"
+	}
+
+	task docsZip(type: Zip) {
+	    group = "Distribution"
+	    baseName = "join"
+	    classifier = "docs"
+	    description = "Builds -${classifier} archive containing api and reference."
+	    from("src/dist") {
+			include "changelog.txt"
+			include "notice.txt"
+	    }
+	    from(api) {
+			into "api"
+	    }
+	    from("src/reference") {
+	    	into "reference"
+	    }
+	}
+
+	artifacts {
+		archives docsZip
+	}
+
+	dependencies {
+
+	}
+
+	idea {
+	    module {
+	      downloadJavadoc = false
+	      downloadSources = true
+	    }
+	    project {
+			ipr {
+		        withXml { xml ->
+		          xml.node.component.find { it.@name == "VcsDirectoryMappings" }.mapping.@vcs = "Git"
+		          xml.node.component.find { it.@name == "ProjectRootManager" }.output.@url = "file://\$PROJECT_DIR\$/build"
+		        }
+			}
+    	}
+	}
+}
+
+task wrapper(type:Wrapper){
+	gradleVersion= '1.10'
+}

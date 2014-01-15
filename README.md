@@ -1,6 +1,7 @@
 [jdk]:http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [maven]:http://maven.apache.org/
 # Join
+
 基于spring、spring-data等的一个基础配置，可以很方便的开发系统。
 
 ## System Requirements
@@ -10,7 +11,6 @@
 ## Getting Started
 
 ####安装JDK
-
 
 ## Documentation
 _(Coming soon)_

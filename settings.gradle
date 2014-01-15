@@ -1,0 +1,8 @@
+rootProject.name = "join"
+
+include "join-core",
+		"join-log",
+		"join-test",
+        "join-web",
+        "join-auth",
+        "join-dao"
