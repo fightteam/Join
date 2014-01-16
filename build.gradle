@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
 	}
 	dependencies {
-
+        dependencies { classpath 'org.ajoberstar:gradle-git:0.6.3' }
     }
 }
 // 一些简单的配置参数
@@ -24,7 +24,7 @@ configure(allprojects) {
     apply plugin: "eclipse"
     apply from: "${gradleScriptDir}/ide.gradle"
 
-    group "org.fightteam.avlon"
+    group "org.fightteam.join"
 
     configurations.all {
         // 不缓存模块的改动
@@ -62,6 +62,8 @@ configure(allprojects) {
     dependencies {
 
     }
+
+
 }
 
 // 子项目共同的配置
@@ -91,6 +93,11 @@ configure(subprojects) { subproject ->
         archives sourcesJar
         archives javadocJar
     }
+    uploadArchives {
+        repositories.mavenDeployer {
+            repository(url: "file://${rootDir}/build/mvn-repo")
+        }
+    }
 }
 
 
@@ -111,6 +118,8 @@ project("join-log") {
         testCompile "junit:junit:$junitVersion"
         testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
     }
+
+
 }
 
 
@@ -127,6 +136,7 @@ project("join-test") {
         compile "junit:junit:$junitVersion"
         compile "org.hamcrest:hamcrest-library:$hamcrestVersion"
         compile "org.hsqldb:hsqldb:$hsqldbVersion"
+        compile "org.springframework:spring-test:$springVersion"
 
     }
 }
@@ -144,7 +154,7 @@ project("join-core") {
         compile "org.springframework:spring-aop:$springVersion"
         compile "org.springframework:spring-core:$springVersion"
         compile "org.springframework:spring-beans:$springVersion"
-        compile "org.springframework:spring-tx:$springVersion"
+        compile "org.springframework:spring-context:$springVersion"
         runtime "cglib:cglib-nodep:$cglibVersion"
 
 
@@ -197,7 +207,6 @@ project("join-web") {
 // ---------------------
 // 主要是文档等的生成。
 configure(rootProject) {
-
 
   	description = "Avalon Exporter"
 
@@ -271,6 +280,25 @@ configure(rootProject) {
 			}
     	}
 	}
+
+    task publishJars( type:Exec ){
+        workingDir "${rootDir}/build"
+        //on windows:
+        commandLine 'git clone -b mvn-repo --depth 1 https://github.com/fightteam/Join.git'.tokenize()
+
+        //on linux
+//        commandLine './stop.sh'
+
+        //store the output instead of printing to the console:
+        standardOutput = new ByteArrayOutputStream()
+
+        //extension method stopTomcat.output() can be used to obtain the output:
+        ext.output = {
+            return standardOutput.toString()
+        }
+
+        println standardOutput.toString()
+    }
 }
 
 task wrapper(type:Wrapper){

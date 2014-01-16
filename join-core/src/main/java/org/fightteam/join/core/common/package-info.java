@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package org.fightteam.join.core;
-
 /**
- * 系统用户
- * @author excalibur
- * @since 0.0.1
+ * 简单公共模块
+ *
+ * 提供了一些常用关键字
  */
-public class User {
-}
+package org.fightteam.join.core.common;
