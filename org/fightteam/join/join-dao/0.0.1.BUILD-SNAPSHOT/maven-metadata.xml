@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.fightteam.join</groupId>
+  <artifactId>join-dao</artifactId>
+  <version>0.0.1.BUILD-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20140116.090222</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20140116090222</lastUpdated>
+  </versioning>
+</metadata>

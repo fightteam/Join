@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.fightteam.join</groupId>
+  <artifactId>join-core</artifactId>
+  <version>0.0.1.BUILD-SNAPSHOT</version>
+  <versioning>
+    <versions>
+      <version>0.0.1.BUILD-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20140116090222</lastUpdated>
+  </versioning>
+</metadata>
