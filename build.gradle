@@ -36,7 +36,7 @@ configure(allprojects) {
                 details.useVersion "$springVersion"
             }
         }
-        // 排除spring库中使用的common org.fightteam.join.log api
+        // 排除spring库中使用的common log api
         exclude group: "commons-logging"
         exclude module: "slf4j-log4j12"
     }
@@ -172,6 +172,9 @@ project("join-dao") {
         // Testing
         testCompile project(":join-test")
 
+
+
+
     }
 
 }
@@ -197,9 +200,13 @@ project("join-web") {
 
     dependencies {
         compile project(":join-log")
+        compile project(":join-core")
         // Testing
         testCompile project(":join-test")
 
+
+        compile "org.springframework:spring-webmvc:$springVersion"
+        compile "org.springframework:spring-web:$springVersion"
     }
 
 }
