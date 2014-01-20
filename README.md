@@ -1,6 +1,6 @@
 [jdk]:http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [maven]:http://maven.apache.org/
-# Join
+# Join [![Build Status](https://travis-ci.org/fightteam/join.png)](https://travis-ci.org/fightteam/join)
 
 基于spring、spring-data等的一个基础配置，可以很方便的开发系统。
 
