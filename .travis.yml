@@ -7,7 +7,6 @@ branches:
   - master
 before_install:
   - chmod a+x gradlew
-install: mvn install -U -DskipTests=true
 script: ./gradlew build
 notifications:
   email:
