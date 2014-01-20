@@ -1,0 +1,13 @@
+language: java
+jdk:
+  - oraclejdk7
+  - openjdk7
+branches:
+  only:
+  - master
+before_install:
+  - chmod a+x gradlew
+script: ./gradlew clean
+notifications:
+  email:
+    - lzy7750015@qq.com

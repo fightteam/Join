@@ -288,24 +288,7 @@ configure(rootProject) {
     	}
 	}
 
-    task publishJars( type:Exec ){
-        workingDir "${rootDir}/build"
-        //on windows:
-        commandLine 'git clone -b mvn-repo --depth 1 https://github.com/fightteam/Join.git'.tokenize()
 
-        //on linux
-//        commandLine './stop.sh'
-
-        //store the output instead of printing to the console:
-        standardOutput = new ByteArrayOutputStream()
-
-        //extension method stopTomcat.output() can be used to obtain the output:
-        ext.output = {
-            return standardOutput.toString()
-        }
-
-        println standardOutput.toString()
-    }
 }
 
 task wrapper(type:Wrapper){
