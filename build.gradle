@@ -36,7 +36,7 @@ configure(allprojects) {
                 details.useVersion "$springVersion"
             }
         }
-        // 排除spring库中使用的common log api
+        // 排除spring库中使用的common log
         exclude group: "commons-logging"
         exclude module: "slf4j-log4j12"
     }
@@ -109,9 +109,11 @@ project("join-log") {
     dependencies {
         // Logging
         compile "org.slf4j:slf4j-api:$slf4jVersion"
-//        runtime "ch.qos.logback:logback-classic:$logbackVersion"
+        compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+        // logback
+        //runtime "ch.qos.logback:logback-classic:$logbackVersion"
 
-        runtime "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
         runtime "org.apache.logging.log4j:log4j-core:$log4jVersion"
 
         // Testing
@@ -137,6 +139,8 @@ project("join-test") {
         compile "org.hamcrest:hamcrest-library:$hamcrestVersion"
         compile "org.hsqldb:hsqldb:$hsqldbVersion"
         compile "org.springframework:spring-test:$springVersion"
+
+        compile "org.eclipse.jetty:jetty-webapp:$jettyVersion"
 
     }
 }
@@ -189,6 +193,8 @@ project("join-auth") {
         // Testing
         testCompile project(":join-test")
 
+        compile "org.springframework.security:spring-security-web:$springSecurityVersion"
+        compile "org.springframework.security:spring-security-config:$springSecurityVersion"
     }
 
 }

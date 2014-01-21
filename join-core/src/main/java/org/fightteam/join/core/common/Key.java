@@ -13,4 +13,6 @@ public class Key {
     public static final String result = "result";
     public static final String response = "response";
     public static final String id = "id";
+    public static final String redirect = "redirect:";
+    public static final String forword = "";
 }
