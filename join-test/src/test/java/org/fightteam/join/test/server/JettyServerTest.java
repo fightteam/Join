@@ -1,8 +1,10 @@
 package org.fightteam.join.test.server;
 
-import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.util.Jetty;
+import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.xml.XmlConfiguration;
 import org.junit.Test;
 
 /**
@@ -14,23 +16,29 @@ import org.junit.Test;
 public class JettyServerTest {
 
     @Test
-    public void test()throws Exception{
+    public void test01()throws Exception{
         Server server = new Server(8080);
-
-       // Connector connector = new SelectChannelConnector();
-        //connector.setPort(8080);
-
-        //server.addConnector(connector);
-
-        WebAppContext webAppContext = new WebAppContext();
-        webAppContext.setContextPath("/mywebapp");
-
-        webAppContext.setWar("src/main/webapp");
-        // webAppContext.setWar(ServerRunner.class.getClassLoader().getResource("com/earldouglas/embeddedjetty/mywebapp").toExternalForm())
-
-        server.setHandler(webAppContext);
 
         server.start();
         server.join();
+    }
+
+    @Test
+    public void test02()throws Exception{
+        Server server = new Server(8080);
+        WebAppContext webAppContext = new WebAppContext();
+        webAppContext.setContextPath("/mywebapp");
+        webAppContext.setResourceBase("src/main/webapp");
+        server.setHandler(webAppContext);
+        server.start();
+        server.join();
+    }
+
+    @Test
+    public void test03()throws Exception{
+        Server server = JettyServer.createServerInSource(8080,"/");
+        server.start();
+//        server.join();
+
     }
 }
