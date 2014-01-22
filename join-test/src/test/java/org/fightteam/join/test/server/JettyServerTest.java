@@ -20,7 +20,7 @@ public class JettyServerTest {
         Server server = new Server(8080);
 
         server.start();
-        server.join();
+//        server.join();
     }
 
     @Test
@@ -31,7 +31,7 @@ public class JettyServerTest {
         webAppContext.setResourceBase("src/main/webapp");
         server.setHandler(webAppContext);
         server.start();
-        server.join();
+//        server.join();
     }
 
     @Test
