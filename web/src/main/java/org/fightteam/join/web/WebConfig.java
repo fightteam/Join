@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 /**
  * 基于java config的spring mvc配置
  *
- * spring framework >=3.2
+ * spring framework 4.0
  *
  * @author excalibur
  * @since 0.0.1

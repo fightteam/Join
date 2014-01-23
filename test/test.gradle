@@ -23,10 +23,10 @@ dependencies {
     //compile("org.eclipse.jetty.toolchain:jetty-jsp-jdt:2.3.3")
 
 
-    compile("javax.faces:javax.faces-api:2.2")
-    compile("javax.portlet:portlet-api:2.0")
-    compile("javax.servlet:javax.servlet-api:3.0.1")
-    compile("javax.servlet.jsp:jsp-api:2.2")
+    //compile("javax.faces:javax.faces-api:2.2")
+    //compile("javax.portlet:portlet-api:2.0")
+    //compile("javax.servlet:javax.servlet-api:3.0.1")
+    //compile("javax.servlet.jsp:jsp-api:2.2")
 
 
 }
