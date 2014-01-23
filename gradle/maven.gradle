@@ -11,7 +11,11 @@ install {
     customizePom(pom, project)
   }
 }
-
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: "file://${rootDir}/build/mvn-repo")
+    }
+}
 def customizePom(pom, gradleProject) {
   pom.whenConfigured { generatedPom ->
     // respect 'optional' and 'provided' dependencies

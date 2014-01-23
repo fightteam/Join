@@ -1,0 +1,19 @@
+apply plugin: "maven"
+description = "join franewirk auth module."
+
+dependencies {
+    compile project(":join-log")
+    compile project(":join-core")
+    // Testing
+    testCompile project(":join-test")
+
+
+    compile "org.springframework.security:spring-security-web:$springSecurityVersion",
+            "org.springframework.security:spring-security-config:$springSecurityVersion",
+            "org.springframework:spring-webmvc:$springVersion",
+            "org.springframework:spring-jdbc:$springVersion",
+            "javax.servlet:jstl:1.2",
+            "javax.validation:validation-api:1.0.0.GA",
+            "org.hibernate:hibernate-validator:4.2.0.Final",
+            "org.springframework.data:spring-data-jpa:$springDataJpaVersion"
+}

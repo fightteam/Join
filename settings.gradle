@@ -1,8 +1,35 @@
-rootProject.name = "join"
+def String[] modules = [
+        'core',
+        'log',
+        'test',
+        'dao',
+        'auth',
+        'web'
+]
 
-include "join-core",
-		"join-log",
-		"join-test",
-        "join-web",
-        "join-auth",
-        "join-dao"
+def String[] samples = [
+        'hello-mvc',
+        'hello-security',
+        'hello-jpa',
+        'hello-log'
+]
+include modules
+
+modules.each {name ->
+    def p = findProject(":${name}")
+    p.name = "join-${name}"
+    p.buildFileName = "${name}.gradle"
+}
+
+include samples
+samples.each {name ->
+    def p = findProject(":${name}")
+    def fullName = name.replaceAll('/','')
+    p.name = "join-samples-${fullName}"
+    p.projectDir = new File(settingsDir, "samples/${name}");
+    if(!p.buildFile.exists()) {
+        def buildFile = "${fullName}"
+        p.buildFileName = "${buildFile}.gradle"
+    }
+}
+rootProject.name = "join"

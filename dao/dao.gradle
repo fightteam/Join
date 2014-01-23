@@ -1,0 +1,13 @@
+apply plugin: "maven"
+
+description = "join franewirk dao module."
+
+dependencies {
+    compile project(":join-log")
+    // Testing
+    testCompile project(":join-test")
+
+
+
+    compile "org.springframework.data:spring-data-jpa:$springDataJpaVersion"
+}

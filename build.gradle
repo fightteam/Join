@@ -4,9 +4,10 @@ buildscript {
  	repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
 	}
 	dependencies {
-        dependencies { classpath 'org.ajoberstar:gradle-git:0.6.3' }
+        classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:1.0'
     }
 }
 // 一些简单的配置参数
@@ -51,12 +52,14 @@ configure(allprojects) {
 
     // 仓库
     repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url "http://repo.springsource.org/libs-snapshot" }
+
+
+        maven { url "http://repo.springsource.io/libs-snapshot" }
         maven {
             url 'http://repo.spring.io/milestone'
         }
+        mavenCentral()
+        mavenLocal()
     }
 
     dependencies {
@@ -70,7 +73,7 @@ configure(allprojects) {
 // ----------------------
 // 主要是javadoc的生成
 configure(subprojects) { subproject ->
-    apply from: "${gradleScriptDir}/maven.gradle"
+    
 
     javadoc {
         options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
@@ -93,129 +96,13 @@ configure(subprojects) { subproject ->
         archives sourcesJar
         archives javadocJar
     }
-    uploadArchives {
-        repositories.mavenDeployer {
-            repository(url: "file://${rootDir}/build/mvn-repo")
-        }
-    }
-}
-
-
-project("join-log") {
-    apply plugin: "maven"
-
-    description = "join franewirk loggin module."
-
-    dependencies {
-        // Logging
-        compile "org.slf4j:slf4j-api:$slf4jVersion"
-        compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
-        // logback
-        //runtime "ch.qos.logback:logback-classic:$logbackVersion"
-
-        compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
-        runtime "org.apache.logging.log4j:log4j-core:$log4jVersion"
-
-        // Testing
-        testCompile "junit:junit:$junitVersion"
-        testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
-    }
-
 
 }
 
 
 
-project("join-test") {
-    apply plugin: "maven"
-
-    description = "oin franewirk junit test module."
-
-    dependencies {
-        compile project(":join-log")
-
-        // Testing
-        compile "junit:junit:$junitVersion"
-        compile "org.hamcrest:hamcrest-library:$hamcrestVersion"
-        compile "org.hsqldb:hsqldb:$hsqldbVersion"
-        compile "org.springframework:spring-test:$springVersion"
-
-        compile "org.eclipse.jetty:jetty-webapp:$jettyVersion"
-
-    }
-}
-project("join-core") {
-    apply plugin: "maven"
-
-    description = "join franewirk core module."
-
-    dependencies {
-        compile project(":join-log")
-        // Testing
-        testCompile project(":join-test")
-
-        // Spring
-        compile "org.springframework:spring-aop:$springVersion"
-        compile "org.springframework:spring-core:$springVersion"
-        compile "org.springframework:spring-beans:$springVersion"
-        compile "org.springframework:spring-context:$springVersion"
-        runtime "cglib:cglib-nodep:$cglibVersion"
 
 
-    }
-
-}
-
-project("join-dao") {
-    apply plugin: "maven"
-
-    description = "join franewirk dao module."
-
-    dependencies {
-        compile project(":join-log")
-        // Testing
-        testCompile project(":join-test")
-
-
-
-
-    }
-
-}
-
-project("join-auth") {
-    apply plugin: "maven"
-
-    description = "join franewirk auth module."
-
-    dependencies {
-        compile project(":join-log")
-        // Testing
-        testCompile project(":join-test")
-
-        compile "org.springframework.security:spring-security-web:$springSecurityVersion"
-        compile "org.springframework.security:spring-security-config:$springSecurityVersion"
-    }
-
-}
-
-project("join-web") {
-    apply plugin: "maven"
-
-    description = "join franewirk web module."
-
-    dependencies {
-        compile project(":join-log")
-        compile project(":join-core")
-        // Testing
-        testCompile project(":join-test")
-
-
-        compile "org.springframework:spring-webmvc:$springVersion"
-        compile "org.springframework:spring-web:$springVersion"
-    }
-
-}
 // 根项目配置
 // ---------------------
 // 主要是文档等的生成。
@@ -240,8 +127,12 @@ configure(rootProject) {
 	    options.splitIndex = true
 	    options.encoding = "UTF-8"
 	    options.linksOffline "http://docs.oracle.com/javase/6/docs/api/", "http://docs.oracle.com/javase/6/docs/api/"
-	    options.linksOffline "http://static.springsource.org/spring/docs/3.1.x/javadoc-api/", "http://static.springsource.org/spring/docs/3.1.x/javadoc-api/"
-	    options.linksOffline "http://static.springsource.org/spring-data/data-commons/docs/current/api/", "http://static.springsource.org/spring-data/data-commons/docs/current/api/"
+	    options.linksOffline "http://docs.spring.io/spring/docs/4.0.0.RELEASE/javadoc-api/", "http://docs.spring.io/spring/docs/4.0.0.RELEASE/javadoc-api/"
+	    options.linksOffline "http://docs.spring.io/spring-data/data-commons/docs/1.7.0.M1/api/", "http://docs.spring.io/spring-data/data-commons/docs/1.7.0.M1/api/"
+        options.linksOffline "http://docs.spring.io/spring-data/rest/docs/2.0.0.M1/api/", "http://docs.spring.io/spring-data/rest/docs/2.0.0.M1/api/"
+        options.linksOffline "http://docs.spring.io/spring-mobile/docs/1.1.0.RELEASE/api/", "http://docs.spring.io/spring-mobile/docs/1.1.0.RELEASE/api/"
+        options.linksOffline "http://docs.spring.io/spring-security/site/docs/3.2.0.RELEASE/apidocs/", "http://docs.spring.io/spring-security/site/docs/3.2.0.RELEASE/apidocs/"
+        options.linksOffline "http://docs.spring.io/spring-data/jpa/docs/1.5.0.M1/api/", "http://docs.spring.io/spring-data/jpa/docs/1.5.0.M1/api/"
 
 	    source subprojects.collect { project ->
 	      project.sourceSets.main.allJava
@@ -284,14 +175,7 @@ configure(rootProject) {
 	      downloadJavadoc = false
 	      downloadSources = true
 	    }
-	    project {
-			ipr {
-		        withXml { xml ->
-		          xml.node.component.find { it.@name == "VcsDirectoryMappings" }.mapping.@vcs = "Git"
-		          xml.node.component.find { it.@name == "ProjectRootManager" }.output.@url = "file://\$PROJECT_DIR\$/build"
-		        }
-			}
-    	}
+	    
 	}
 
 
