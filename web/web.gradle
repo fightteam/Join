@@ -1,5 +1,4 @@
-apply plugin: "maven"
-apply from: "${gradleScriptDir}/tomcat.gradle"
+apply from: "${gradleScriptDir}/maven.gradle"
 description = "join franewirk web module."
 
 

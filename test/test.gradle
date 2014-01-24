@@ -1,4 +1,4 @@
-apply plugin: "maven"
+apply from: "${gradleScriptDir}/maven.gradle"
 description = "oin franewirk junit test module."
 
 dependencies {
@@ -10,23 +10,7 @@ dependencies {
     compile "org.hsqldb:hsqldb:$hsqldbVersion"
     compile "org.springframework:spring-test:$springVersion"
 
-    compile "org.eclipse.jetty:jetty-webapp:$jettyVersion"
-    compile "org.eclipse.jetty:jetty-io:$jettyVersion"
-    compile "org.eclipse.jetty:jetty-server:$jettyVersion"
-    compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
-    compile "org.eclipse.jetty:jetty-util:$jettyVersion"
-    compile "org.eclipse.jetty:jetty-deploy:$jettyVersion"
 
-    //compile("org.eclipse.jetty.orbit:org.apache.taglibs.standard.glassfish:1.2.0.v201112081803")
-    //compile("org.eclipse.jetty.orbit:javax.servlet.jsp.jstl:1.2.0.v201105211821")
-    //compile("javax.el:javax.el-api:3.0.0")
-    //compile("org.eclipse.jetty.toolchain:jetty-jsp-jdt:2.3.3")
-
-
-    //compile("javax.faces:javax.faces-api:2.2")
-    //compile("javax.portlet:portlet-api:2.0")
-    //compile("javax.servlet:javax.servlet-api:3.0.1")
-    //compile("javax.servlet.jsp:jsp-api:2.2")
 
 
 }

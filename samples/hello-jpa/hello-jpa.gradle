@@ -1,5 +1,4 @@
-apply plugin: 'war'
-apply from: "${gradleScriptDir}/tomcat.gradle"
+apply plugin: 'java'
 
 description = "join franewirk dao module sample."
 
@@ -9,8 +8,14 @@ dependencies {
     // Testing
     testCompile project(":join-test")
 
-    compile project(":join-web")
+    compile project(":join-dao")
 
+    compile "org.springframework:spring-tx:$springVersion"
 
-   
+    compile "org.springframework:spring-aspects:$springVersion"
+
+    compile "org.springframework.data:spring-data-jpa:$springDataJpaVersion"
+
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final"
 }

@@ -1,4 +1,4 @@
-apply plugin: "maven"
+apply from: "${gradleScriptDir}/maven.gradle"
 
 description = "join franewirk loggin module."
 

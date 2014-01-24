@@ -1,4 +1,4 @@
-apply plugin: "maven"
+apply from: "${gradleScriptDir}/maven.gradle"
 
 description = "join franewirk dao module."
 
@@ -9,5 +9,5 @@ dependencies {
 
 
 
-    compile "org.springframework.data:spring-data-jpa:$springDataJpaVersion"
+    compile("org.springframework.data:spring-data-jpa:$springDataJpaVersion", optional)
 }

@@ -17,6 +17,6 @@
 /**
  * web 服务模块
  *
- * 提供常用类
+ * 提供常用配置类，基本方法类等
  */
 package org.fightteam.join.web;

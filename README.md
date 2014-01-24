@@ -1,21 +1,11 @@
-[jdk]:http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[maven]:http://maven.apache.org/
 # Join [![Build Status](https://travis-ci.org/fightteam/Join.png)](https://travis-ci.org/fightteam/Join)
 
 基于spring、spring-data等的一个基础配置，可以很方便的开发系统。
 
-## System Requirements
-> + [jdk][jdk]——1.6+
->
-
-## Getting Started
-
-####安装JDK
-
-## Documentation
+## 文档
 _(Coming soon)_
 
-## Examples
+## 例子
 _(Coming soon)_
 
 ## Release History

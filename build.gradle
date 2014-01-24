@@ -21,8 +21,6 @@ ext {
 // 项目编译参数设置、依赖等等
 configure(allprojects) {
     apply plugin: "java"
-    apply plugin: "idea"
-    apply plugin: "eclipse"
     apply from: "${gradleScriptDir}/ide.gradle"
 
     group "org.fightteam.join"
@@ -170,13 +168,6 @@ configure(rootProject) {
 
 	}
 
-	idea {
-	    module {
-	      downloadJavadoc = false
-	      downloadSources = true
-	    }
-	    
-	}
 
 
 }
