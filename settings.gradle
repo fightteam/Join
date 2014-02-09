@@ -11,7 +11,10 @@ def String[] samples = [
         'hello-mvc',
         'hello-security',
         'hello-jpa',
-        'hello-log'
+        'hello-log',
+        'hello-token',
+        'hello-filter',
+        'hello-oauth2'
 ]
 include modules
 
