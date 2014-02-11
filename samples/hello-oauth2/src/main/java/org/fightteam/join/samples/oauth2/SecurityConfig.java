@@ -8,11 +8,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.cache.NullUserCache;
+import org.springframework.security.oauth2.client.token.AccessTokenProvider;
 import org.springframework.security.oauth2.client.token.AccessTokenProviderChain;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+
+import java.util.List;
 
 /**
  * @author excalibur
@@ -23,4 +26,7 @@ import org.springframework.security.web.authentication.www.DigestAuthenticationF
 public class SecurityConfig extends AccessTokenProviderChain {
 
 
+    public SecurityConfig(List<? extends AccessTokenProvider> chain) {
+        super(chain);
+    }
 }

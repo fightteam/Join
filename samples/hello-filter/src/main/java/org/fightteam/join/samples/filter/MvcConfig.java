@@ -1,6 +1,5 @@
-package org.fightteam.join.samples.security;
+package org.fightteam.join.samples.filter;
 
-import org.fightteam.join.web.AbstractWebConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;

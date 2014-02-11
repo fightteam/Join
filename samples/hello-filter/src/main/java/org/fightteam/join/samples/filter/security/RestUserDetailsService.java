@@ -6,6 +6,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.ClientRegistrationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +17,7 @@ import java.util.List;
  * @author excalibur
  * @since 0.0.1
  */
-public class RestUserDetailsService implements UserDetailsService {
+public class RestUserDetailsService implements UserDetailsService,ClientDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -25,5 +28,11 @@ public class RestUserDetailsService implements UserDetailsService {
         list.add(grantedAuthority);
         UserDetails userDetails = new User("faith","123456",list);
         return userDetails;
+    }
+
+    @Override
+    public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
+        System.out.println("======================================");
+        return null;
     }
 }

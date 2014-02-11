@@ -1,4 +1,4 @@
-package org.fightteam.join.samples.security;
+package org.fightteam.join.samples.filter;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;

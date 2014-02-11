@@ -17,6 +17,7 @@ import java.util.List;
  * @author faith
  * @since 0.0.1
  */
+@Service
 public class UserService implements UserDetailsService {
 
     @Override

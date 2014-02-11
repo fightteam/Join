@@ -1,14 +1,19 @@
 package org.fightteam.join.samples.filter;
 
+import org.fightteam.join.samples.filter.security.CORSAwareFilter;
 import org.fightteam.join.samples.filter.security.RestUserDetailsService;
 import org.fightteam.join.samples.filter.test.NullSecurityContextRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
@@ -18,9 +23,20 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.authentication.AuthenticationManagerBeanDefinitionParser;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
+import org.springframework.security.oauth2.provider.error.DefaultOAuth2ExceptionRenderer;
+import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
@@ -30,6 +46,7 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
@@ -37,17 +54,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.Filter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author excalibur
  * @since 0.0.1
  */
 @Configuration
-@ComponentScan(basePackageClasses = SecurityApplicationConfig.class)
 public class SecurityApplicationConfig {
 
     /**
@@ -93,7 +106,8 @@ public class SecurityApplicationConfig {
 
         // 1.ChannelProcessingFilter
         // 协议过滤器,用于协议之间的切换
-        //filters.add(channelProcessingFilter());
+//        filters.add(channelProcessingFilter());
+        filters.add(new CORSAwareFilter());
 
         // 2.SecurityContextPersistenceFilter 必须
         // 权限上下文持久化过滤器,常见是把SecurityContext信息对应到session中
@@ -101,15 +115,15 @@ public class SecurityApplicationConfig {
 
         // 3.ConcurrentSessionFilter
         // SecurityContextHolder中更新SessionRegistry，以反映当前的请求中对应的principal
-        filters.add(securityContextHolderAwareRequestFilter());
+       // filters.add(securityContextHolderAwareRequestFilter());
 
         // 4.UsernamePasswordAuthenticationFilter, CasAuthenticationFilter, BasicAuthenticationFilter etc
         // 认证方式过滤器，选择其中需要的就
         // filters.add(tokenAuthenticationFilter());
-
+        filters.add(oauthFilter());
         // 5.SecurityContextHolderAwareRequestFilter
         // 注入过滤器，如果你要在HttpServletRequestWrapper中使用，就要配置
-        filters.add(securityContextHolderAwareRequestFilter());
+        //filters.add(securityContextHolderAwareRequestFilter());
 
         // 6.JaasApiIntegrationFilter
         // 如果JaasAuthenticationToken在SecurityContextHolder中，Subject将会在JaasAuthenticationToken中贯穿整个过滤链
@@ -124,7 +138,7 @@ public class SecurityApplicationConfig {
 
         // 9.ExceptionTranslationFilter
         // 异常处理过滤器
-
+        filters.add(exceptionTranslationFilter());
         // 10.FilterSecurityInterceptor 必须
         // 当需要保护时候，切入点
         filters.add(filterSecurityInterceptor());
@@ -148,19 +162,14 @@ public class SecurityApplicationConfig {
     @Bean
     public SecurityContextPersistenceFilter securityContextPersistenceFilter() {
 
-        SecurityContextPersistenceFilter filter = new SecurityContextPersistenceFilter(nullSecurityContextRepository());
+        SecurityContextPersistenceFilter filter = new SecurityContextPersistenceFilter();
         return filter;
-    }
-
-    @Bean
-    public SecurityContextRepository nullSecurityContextRepository() {
-        return new NullSecurityContextRepository();
     }
 
     @Bean
     public SecurityContextHolderAwareRequestFilter securityContextHolderAwareRequestFilter() {
         SecurityContextHolderAwareRequestFilter f = new SecurityContextHolderAwareRequestFilter();
-        f.setRolePrefix("");
+
 
         return f;
     }
@@ -185,6 +194,11 @@ public class SecurityApplicationConfig {
         f.setAuthenticationManager(authenticationManager());
         f.setSecurityMetadataSource(filterInvocationSecurityMetadataSource());
 
+        try {
+            f.afterPropertiesSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return f;
     }
 
@@ -196,23 +210,14 @@ public class SecurityApplicationConfig {
     @Bean
     public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource() {
 
-        LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
+        SecurityExpressionHandler<FilterInvocation> securityExpressionHandler = new DefaultWebSecurityExpressionHandler();
 
-        /*
-         * 类似:
-         *
-         * <intercept-url pattern="/gocardless/**"
-         * access="ROLE_GOCARDLESS_CUSTOMER" /> <intercept-url
-         * pattern="/resources/**" access="permitAll" /> <intercept-url
-         * pattern="/" access="isAuthenticated()" /> <intercept-url
-         * pattern="/**" access="permitAll" />
-         */
-        List<ConfigAttribute> authenticatedAllowed = SecurityConfig.createList("isAuthenticated()");
+        LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
+        map.put(new AntPathRequestMatcher("/**"), Arrays.<ConfigAttribute>asList(new SecurityConfig("hasRole('ROLE_SUPER')")));
 
-        requestMap.put(new AntPathRequestMatcher("/**")/* any method*/, authenticatedAllowed);
+        ExpressionBasedFilterInvocationSecurityMetadataSource ms = new ExpressionBasedFilterInvocationSecurityMetadataSource(map, securityExpressionHandler);
 
-
-        return new ExpressionBasedFilterInvocationSecurityMetadataSource(requestMap,new DefaultWebSecurityExpressionHandler());
+        return ms;
     }
 
     /**
@@ -222,13 +227,31 @@ public class SecurityApplicationConfig {
     @Bean
     public AuthenticationManager authenticationManager() {
 
-        List<AuthenticationProvider> providers = new ArrayList<AuthenticationProvider>();
+        List<AuthenticationProvider> providers = new ArrayList<>();
 
-        AuthenticationProvider ap = new AuthenticationManagerBeanDefinitionParser.NullAuthenticationProvider();
-        providers.add(ap);
-        ProviderManager am = new ProviderManager(providers);
-        return am;
+        //PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken();
+//        DaoAuthenticationProvider daoAP = new DaoAuthenticationProvider();
+//        daoAP.setUserDetailsService(userDetailsService());
+//        providers.add(daoAP);
+        OAuth2AuthenticationManager manager = new OAuth2AuthenticationManager();
+        DefaultTokenServices tokenServices = new DefaultTokenServices();
+        InMemoryTokenStore tokenStore = new InMemoryTokenStore();
+
+        tokenServices.setTokenStore(tokenStore);
+        manager.setTokenServices(tokenServices);
+
+        return manager;
     }
+
+    @Bean
+    public OAuth2AuthenticationProcessingFilter oauthFilter() {
+        OAuth2AuthenticationProcessingFilter filter = new OAuth2AuthenticationProcessingFilter();
+        filter.setAuthenticationManager(authenticationManager());
+        filter.setAuthenticationEntryPoint(oauthProcessingFilterEntryPoint());
+
+        return filter;
+    }
+
 
     @Bean
     public AuthenticationProvider daoAuthenticationProvider() {
@@ -261,5 +284,32 @@ public class SecurityApplicationConfig {
 
     }
 
+    /**
+     * 异常处理
+     * @return
+     */
+    @Bean
+    public ExceptionTranslationFilter exceptionTranslationFilter() {
+        ExceptionTranslationFilter exceptionTranslationFilter = new ExceptionTranslationFilter(oauthProcessingFilterEntryPoint());
+        exceptionTranslationFilter.afterPropertiesSet();
+        return exceptionTranslationFilter;
+    }
 
+    /**
+     * 异常切入点
+     *
+     * 设置了json转换，使用spring mvc的默认实现
+     * @return
+     */
+    @Bean
+    public OAuth2AuthenticationEntryPoint oauthProcessingFilterEntryPoint() {
+        OAuth2AuthenticationEntryPoint bean = new OAuth2AuthenticationEntryPoint();
+        DefaultOAuth2ExceptionRenderer renderer = new DefaultOAuth2ExceptionRenderer();
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        messageConverters.add(converter);
+        renderer.setMessageConverters(messageConverters);
+        bean.setExceptionRenderer(renderer);
+        return bean;
+    }
 }

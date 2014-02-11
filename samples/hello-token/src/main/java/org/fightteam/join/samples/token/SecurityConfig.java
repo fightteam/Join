@@ -3,6 +3,11 @@ package org.fightteam.join.samples.token;
 import org.fightteam.join.samples.token.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.AuthenticatedVoter;
+import org.springframework.security.access.vote.RoleVoter;
+import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +23,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author excalibur
@@ -66,7 +74,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
         filterSecurityInterceptor.setSecurityMetadataSource(new RestSecurityMetadataSource());
-        filterSecurityInterceptor.setAccessDecisionManager(new RestAccessDecisionManager());
+        List<AccessDecisionVoter> decisionVoters = new ArrayList<>();
+        // 角色投票器
+        RoleVoter roleVoter = new RoleVoter();
+        decisionVoters.add(roleVoter);
+        //
+        AuthenticatedVoter authenticatedVoter = new AuthenticatedVoter();
+        decisionVoters.add(authenticatedVoter);
+
+        AffirmativeBased affirmativeBased = new AffirmativeBased(decisionVoters);
+        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased);
         filterSecurityInterceptor.setAuthenticationManager(this.authenticationManagerBean());
 
 
