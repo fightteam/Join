@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,16 @@ import java.util.List;
  * @author faith
  * @since 0.0.1
  */
+@Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+
+    /**
+     * 载入用户信息
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException 没有该用户
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<GrantedAuthority> list = new ArrayList<>();
