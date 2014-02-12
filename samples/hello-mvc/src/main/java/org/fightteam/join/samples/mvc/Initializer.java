@@ -1,6 +1,5 @@
 package org.fightteam.join.samples.mvc;
 
-import org.fightteam.join.AbstractAppConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**

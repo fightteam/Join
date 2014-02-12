@@ -23,6 +23,8 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.authentication.AuthenticationManagerBeanDefinitionParser;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.oauth2.provider.error.DefaultOAuth2ExceptionRenderer;
@@ -47,6 +49,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
@@ -107,7 +110,7 @@ public class SecurityApplicationConfig {
         // 1.ChannelProcessingFilter
         // 协议过滤器,用于协议之间的切换
 //        filters.add(channelProcessingFilter());
-        filters.add(new CORSAwareFilter());
+        //filters.add(new CORSAwareFilter());
 
         // 2.SecurityContextPersistenceFilter 必须
         // 权限上下文持久化过滤器,常见是把SecurityContext信息对应到session中
@@ -120,7 +123,11 @@ public class SecurityApplicationConfig {
         // 4.UsernamePasswordAuthenticationFilter, CasAuthenticationFilter, BasicAuthenticationFilter etc
         // 认证方式过滤器，选择其中需要的就
         // filters.add(tokenAuthenticationFilter());
-        filters.add(oauthFilter());
+        BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(authenticationManager(),
+                oauthProcessingFilterEntryPoint());
+
+        filters.add(basicAuthenticationFilter);
+
         // 5.SecurityContextHolderAwareRequestFilter
         // 注入过滤器，如果你要在HttpServletRequestWrapper中使用，就要配置
         //filters.add(securityContextHolderAwareRequestFilter());
@@ -236,7 +243,9 @@ public class SecurityApplicationConfig {
         OAuth2AuthenticationManager manager = new OAuth2AuthenticationManager();
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         InMemoryTokenStore tokenStore = new InMemoryTokenStore();
-
+        DefaultOAuth2AccessToken token = new DefaultOAuth2AccessToken("1111");
+        //OAuth2Authentication authentication = new
+        //tokenStore.storeAccessToken(token, );
         tokenServices.setTokenStore(tokenStore);
         manager.setTokenServices(tokenServices);
 
@@ -291,7 +300,6 @@ public class SecurityApplicationConfig {
     @Bean
     public ExceptionTranslationFilter exceptionTranslationFilter() {
         ExceptionTranslationFilter exceptionTranslationFilter = new ExceptionTranslationFilter(oauthProcessingFilterEntryPoint());
-        exceptionTranslationFilter.afterPropertiesSet();
         return exceptionTranslationFilter;
     }
 

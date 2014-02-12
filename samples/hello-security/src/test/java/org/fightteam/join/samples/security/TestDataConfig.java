@@ -1,5 +1,6 @@
-package org.fightteam.join.dao;
+package org.fightteam.join.samples.security;
 
+import org.fightteam.join.dao.AbstractDataConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -25,42 +28,33 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 /**
- * 数据源配置
+ * [description]
  *
  * @author faith
  * @since 0.0.1
  */
 @Configuration
-@ComponentScan(basePackages = "org.fightteam")
-@EnableJpaRepositories(basePackages = "org.fightteam")
+@ComponentScan(basePackages = "org.fightteam.join")
+@EnableJpaRepositories
 @EnableAsync
 @EnableTransactionManagement
-public class AbstractDataConfig {
-
-    private final static Logger log = LoggerFactory.getLogger(AbstractDataConfig.class);
+public class TestDataConfig extends AbstractDataConfig {
+    private final static Logger log = LoggerFactory.getLogger(TestDataConfig.class);
     @Autowired
     private Environment environment;
 
     private Database databaseType;
-
     @Bean
     public DataSource dataSource() {
-       try {
-            Context ctx = new InitialContext();
-            Context envContext = (Context)ctx.lookup("java:/comp/env");
-            DataSource ds = (DataSource)envContext.lookup("jdbc/database");
-            return ds;
-        } catch (NamingException e) {
-            log.error("create data source error",e);
-        }
-        return null;
+       EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+            return builder.setType(EmbeddedDatabaseType.HSQL).build();
     }
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
-        vendorAdapter.setDatabase(Database.MYSQL);
+        vendorAdapter.setDatabase(Database.HSQL);
         vendorAdapter.setGenerateDdl(true);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();

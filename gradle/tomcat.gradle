@@ -3,8 +3,14 @@ apply plugin: 'tomcat'
 dependencies {
     def tomcatVersion = '7.0.50'
     tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+            "org.apache.tomcat:tomcat-dbcp:${tomcatVersion}"
     tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
         exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
     }
+}
+tomcatRun {
+    httpPort = 8080
+    reloadable = true
+
 }

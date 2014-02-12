@@ -6,6 +6,7 @@ description = "join franewirk security module sample."
 dependencies {
     compile project(":join-log")
     compile project(":join-core")
+    compile project(":join-dao")
     // Testing
     testCompile project(":join-test")
 

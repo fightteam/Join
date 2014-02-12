@@ -1,12 +1,17 @@
 package org.fightteam.join.samples.security;
 
+import org.fightteam.join.auth.AbstractSecurityConfig;
 import org.fightteam.join.samples.security.security.RestAccessDeniedHandler;
 import org.fightteam.join.samples.security.security.RestSecurityMetadataSource;
 import org.fightteam.join.samples.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
@@ -22,25 +27,33 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.access.expression.ExpressionBasedFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.Filter;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
- * [description]
- *
- * @author faith
- * @since 0.0.1
- */
+* [description]
+*
+* @author faith
+* @since 0.0.1
+*/
 @Configuration
-@EnableWebMvcSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends AbstractSecurityConfig {
 
 
     UserDetailsService userDetailsService = new UserService();
@@ -57,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 在内存中创建一个用户
 //        常用数据库来保持用户
-        //auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService);
 
     }
     @Bean
@@ -96,18 +109,72 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased);
 //        filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
 
+        DigestAuthenticationFilter digestAuthenticationFilter = new DigestAuthenticationFilter();
+        DigestAuthenticationEntryPoint entryPoint = new DigestAuthenticationEntryPoint();
+        entryPoint.setRealmName("Contacts Realm via Digest Authentication");
+        entryPoint.setKey("acgi");
+        entryPoint.setNonceValiditySeconds(10);
+        digestAuthenticationFilter.setAuthenticationEntryPoint(entryPoint);
+        digestAuthenticationFilter.setUserDetailsService(userDetailsService);
         http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .exceptionHandling()
-                .accessDeniedHandler(new RestAccessDeniedHandler());
+                .accessDeniedHandler(new RestAccessDeniedHandler()).and()
+                .httpBasic()
+                .and()
+        .addFilterAfter(digestAuthenticationFilter, BasicAuthenticationFilter.class)
+        .addFilterBefore(filterSecurityInterceptor(), FilterSecurityInterceptor.class);
 
     }
 
-    @Override
-    protected UserDetailsService userDetailsService() {
+    @Bean
+    public FilterSecurityInterceptor filterSecurityInterceptor() throws Exception {
 
-        return userDetailsService;
+
+        FilterSecurityInterceptor f = new FilterSecurityInterceptor();
+        f.setAccessDecisionManager(accessDecisionManager());
+        f.setAuthenticationManager(authenticationManagerBean());
+        f.setSecurityMetadataSource(filterInvocationSecurityMetadataSource());
+
+        try {
+            f.afterPropertiesSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 
+
+    @Bean
+    public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource() {
+
+        SecurityExpressionHandler<FilterInvocation> securityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+
+        LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
+        map.put(new AntPathRequestMatcher("/1"), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasAuthority('AUTH_A@CREATE')")));
+        map.put(new AntPathRequestMatcher("/**"), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasRole('ROLE_ADMIN')")));
+        ExpressionBasedFilterInvocationSecurityMetadataSource ms = new ExpressionBasedFilterInvocationSecurityMetadataSource(map, securityExpressionHandler);
+
+        return ms;
+    }
+    @Bean
+    public AccessDecisionManager accessDecisionManager() {
+
+        List<AccessDecisionVoter> voters = new ArrayList<>();
+        RoleVoter auth = new RoleVoter();
+        auth.setRolePrefix("AUTH_");
+        voters.add(new RoleVoter());
+        voters.add(auth);
+        voters.add(new WebExpressionVoter());
+        voters.add(new AuthenticatedVoter());
+
+        AffirmativeBased adm = new AffirmativeBased(voters);
+
+        return adm;
+
+    }
 
 
 

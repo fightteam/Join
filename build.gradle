@@ -52,7 +52,7 @@ configure(allprojects) {
     repositories {
 
 
-        maven { url "http://repo.springsource.io/libs-snapshot" }
+        maven { url "http://repo.spring.io/libs-snapshot" }
         maven {
             url 'http://repo.spring.io/milestone'
         }

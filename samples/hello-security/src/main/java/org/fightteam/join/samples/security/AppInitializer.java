@@ -1,7 +1,8 @@
 package org.fightteam.join.samples.security;
 
-import org.springframework.core.annotation.Order;
-import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import org.fightteam.join.AbstractAppConfig;
+import org.fightteam.join.auth.AbstractSecurityConfig;
+import org.fightteam.join.web.AbstractWebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -13,12 +14,12 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{RootConfig.class};
+        return new Class<?>[]{AbstractAppConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[]{MvcConfig.class};
+        return new Class<?>[]{AbstractWebConfig.class};
     }
 
     @Override

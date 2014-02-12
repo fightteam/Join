@@ -21,6 +21,7 @@ public class RestUserDetailsService implements UserDetailsService,ClientDetailsS
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("-----------------------------------");
         System.out.println("username = [" + username + "]");
         List<GrantedAuthority> list = new ArrayList<>();
 

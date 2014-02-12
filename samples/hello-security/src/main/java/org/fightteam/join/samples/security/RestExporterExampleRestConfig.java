@@ -1,7 +1,7 @@
 package org.fightteam.join.samples.security;
 
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
 /**
  * [description]
@@ -10,6 +10,5 @@ import org.springframework.context.annotation.Configuration;
  * @since 0.0.1
  */
 @Configuration
-@ComponentScan
-public class RootConfig {
+public class RestExporterExampleRestConfig extends RepositoryRestMvcConfiguration {
 }

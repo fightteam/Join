@@ -1,6 +1,5 @@
 package org.fightteam.join.samples.security.security;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -27,10 +26,10 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> message = new HashMap<>();
-        message.put("message","Forbidden "+accessDeniedException.getMessage());
-        mapper.writeValue(response.getOutputStream(),message);
+//        ObjectMapper mapper = new ObjectMapper();
+//        Map<String, Object> message = new HashMap<>();
+//        message.put("message","Forbidden "+accessDeniedException.getMessage());
+//        mapper.writeValue(response.getOutputStream(),message);
 
     }
 }

@@ -4,17 +4,21 @@ apply from: "${gradleScriptDir}/tomcat.gradle"
 description = "join franewirk security module sample."
 
 dependencies {
-    compile project(":join-log")
-    compile project(":join-core")
+
+
     // Testing
     testCompile project(":join-test")
 
     compile project(":join-web")
     compile project(":join-auth")
 
-    compile "javax.servlet:jstl:1.2"
-    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
-    compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
+    compile "javax.servlet:jstl:1.2",
+            //"org.hsqldb:hsqldb:2.2.8",
+            'mysql:mysql-connector-java:5.1.28'
+
+
+
+
 
     providedCompile "javax.servlet:javax.servlet-api:3.0.1",
             'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'

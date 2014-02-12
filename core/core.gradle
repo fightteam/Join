@@ -14,5 +14,6 @@ dependencies {
     compile "org.springframework:spring-context:$springVersion"
     runtime "cglib:cglib-nodep:$cglibVersion"
 
-
+    compile "org.springframework:spring-webmvc:$springVersion",provided
+    compile "org.springframework:spring-web:$springVersion",provided
 }
