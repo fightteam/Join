@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -140,7 +141,10 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
 
         LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
         map.put(new AntPathRequestMatcher("/1"), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasAuthority('AUTH_A@CREATE')")));
-        map.put(new AntPathRequestMatcher("/**"), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasRole('ROLE_ADMIN')")));
+        map.put(new AntPathRequestMatcher("/**", HttpMethod.GET.name()), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasRole('ROLE_ADMIN')")));
+        map.put(new AntPathRequestMatcher("/**", HttpMethod.POST.name()), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasRole('ROLE_ADMIN')")));
+        map.put(new AntPathRequestMatcher("/**", HttpMethod.PUT.name()), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasRole('ROLE_ADMIN')")));
+        map.put(new AntPathRequestMatcher("/**", HttpMethod.DELETE.name()), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasRole('ROLE_ADMIN')")));
         ExpressionBasedFilterInvocationSecurityMetadataSource ms = new ExpressionBasedFilterInvocationSecurityMetadataSource(map, securityExpressionHandler);
 
         return ms;

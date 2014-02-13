@@ -10,6 +10,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
  * @author faith
  * @since 0.0.1
  */
-@RestResource(rel = "users")
+@RestResource(rel = "users", path = "users")
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 }

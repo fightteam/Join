@@ -1,7 +1,6 @@
 package org.fightteam.join.samples.security;
 
 import org.fightteam.join.AbstractAppConfig;
-import org.fightteam.join.auth.AbstractSecurityConfig;
 import org.fightteam.join.web.AbstractWebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

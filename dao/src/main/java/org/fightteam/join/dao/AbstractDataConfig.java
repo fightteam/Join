@@ -31,7 +31,6 @@ import javax.sql.DataSource;
  * @since 0.0.1
  */
 @Configuration
-@ComponentScan(basePackages = "org.fightteam")
 @EnableJpaRepositories(basePackages = "org.fightteam")
 @EnableAsync
 @EnableTransactionManagement

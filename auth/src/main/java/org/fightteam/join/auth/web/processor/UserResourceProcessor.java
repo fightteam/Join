@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author faith
  * @since 0.0.1
  */
-@Component
+//@Component
 public class UserResourceProcessor implements ResourceProcessor<Resource<User>> {
     @Override
     public Resource<User> process(Resource<User> resource) {

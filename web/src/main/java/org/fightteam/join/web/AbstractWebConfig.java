@@ -23,20 +23,20 @@ import java.util.Map;
  * @author excalibur
  * @since 0.0.1
  */
-@Configuration
+//@Configuration
 @EnableWebMvc
 @ComponentScan(includeFilters = {@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(ControllerAdvice.class)},
         useDefaultFilters = false)
-public abstract class AbstractWebConfig extends WebMvcConfigurerAdapter {
+public class AbstractWebConfig extends WebMvcConfigurerAdapter {
 
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        Map<String, MediaType> map = new HashMap<>();
-        map.put("json",MediaType.APPLICATION_JSON);
-        map.put("xml",MediaType.APPLICATION_XML);
-        configurer.favorPathExtension(false)
-                .favorParameter(true).mediaTypes(map);
-    }
+//    @Override
+//    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+////        Map<String, MediaType> map = new HashMap<>();
+////        map.put("json",MediaType.APPLICATION_JSON);
+////        configurer.favorPathExtension(false)
+////                .favorParameter(true).mediaTypes(map);
+//        configurer.defaultContentType(MediaType.APPLICATION_JSON);
+//    }
 
 //    @Bean
 //    public InternalResourceViewResolver getInternalResourceViewResolver() {
