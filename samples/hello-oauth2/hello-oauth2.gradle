@@ -1,7 +1,7 @@
 apply plugin: 'war'
 apply from: "${gradleScriptDir}/tomcat.gradle"
 
-description = "join franewirk security module sample."
+description = "join framework security module sample."
 
 dependencies {
     compile project(":join-log")

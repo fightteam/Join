@@ -1,6 +1,6 @@
 apply from: "${gradleScriptDir}/maven.gradle"
 
-description = "join franewirk core module."
+description = "join framework core module."
 
 dependencies {
     compile project(":join-log")

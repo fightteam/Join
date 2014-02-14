@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-description = "join franewirk dao module sample."
+description = "join framework dao module sample."
 
 dependencies {
     compile project(":join-log")

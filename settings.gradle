@@ -4,7 +4,10 @@ def String[] modules = [
         'test',
         'dao',
         'auth',
-        'web'
+        'web',
+        'rest',
+        "rest:spring-data-rest-core",
+        "rest:spring-data-rest-webmvc"
 ]
 
 def String[] samples = [
@@ -22,6 +25,9 @@ include modules
 modules.each {name ->
     def p = findProject(":${name}")
     p.name = "join-${name}"
+    if ("${name}".indexOf(":") != -1){
+        name = "build"
+    }
     p.buildFileName = "${name}.gradle"
 }
 

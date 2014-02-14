@@ -1,5 +1,5 @@
 apply from: "${gradleScriptDir}/maven.gradle"
-description = "join franewirk auth module."
+description = "join framework auth module."
 
 dependencies {
     compile project(":join-log")

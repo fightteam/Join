@@ -1,5 +1,5 @@
 apply from: "${gradleScriptDir}/maven.gradle"
-description = "oin franewirk junit test module."
+description = "oin framework junit test module."
 
 dependencies {
     compile project(":join-log")
