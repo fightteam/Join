@@ -1,0 +1,19 @@
+
+configure(subprojects) { subproject ->
+    apply from: "${gradleScriptDir}/maven.gradle"
+    description = "join framework source."
+
+    dependencies {
+        compile project(":join-log")
+        compile project(":join-core")
+        // Testing
+        testCompile project(":join-test")
+
+
+
+        compile "org.springframework:spring-webmvc:$springVersion"
+        compile "org.springframework:spring-web:$springVersion"
+
+        compile("org.springframework.hateoas:spring-hateoas:$springHateoasVersion", optional)
+    }
+}
