@@ -1,6 +1,6 @@
 apply from: "${gradleScriptDir}/maven.gradle"
 
-description = "join franewirk loggin module."
+description = "join framework logging module."
 
 dependencies {
 

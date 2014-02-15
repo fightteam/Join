@@ -5,9 +5,7 @@ def String[] modules = [
         'dao',
         'auth',
         'web',
-        'rest',
-        "rest:spring-data-rest-core",
-        "rest:spring-data-rest-webmvc"
+        'rest'
 ]
 
 def String[] samples = [
