@@ -1,8 +1,25 @@
 package org.fightteam.join.samples.rest;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleDeserializers;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.module.SimpleSerializers;
+import org.fightteam.join.samples.rest.data.MyEntitySerializer;
+import org.fightteam.join.samples.rest.data.PersistentEntityJackson2Module;
+import org.fightteam.join.samples.rest.data.entity.User;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
 * [description]
@@ -14,74 +31,36 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 public class RestExporterExampleRestConfig extends RepositoryRestMvcConfiguration {
 
 
-//    @Override
-//    protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-////        config.getDomainTypesResourceMappingConfiguration()
-////                .getResourceMappingFor(User.class)
-////                .getResourceMappingFor("username").setExported(false);
-//    }
+    @Override
+    protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+        config.setDefaultMediaType(MediaType.APPLICATION_JSON);
+    }
+
+    @Bean
+    @Override
+    public MappingJackson2HttpMessageConverter jacksonHttpMessageConverter() {
+
+        List<MediaType> mediaTypes = new ArrayList<MediaType>();
+        mediaTypes.addAll(Arrays.asList(MediaType.valueOf("application/json")));
 
 
-//    @Override
-//    protected void configureJacksonObjectMapper(ObjectMapper objectMapper) {
-//        SimpleModule testModule = new SimpleModule("Avlon Module", new Version(1, 0, 0, "","org.fightteam", "jackson-module"));
-//
-//        testModule.addSerializer(User.class, new MyEntitySerializer());
-//        objectMapper.registerModule(testModule);
-//        objectMapper.registerModule(new SimpleModule("MyCustomModule"){
-//            @Override public void setupModule(SetupContext context) {
-//                SimpleSerializers serializers = new SimpleSerializers();
-//                SimpleDeserializers deserializers = new SimpleDeserializers();
-//
-//                serializers.addSerializer(User.class, new MyEntitySerializer());
-//
-//
-//                context.addSerializers(serializers);
-//                //context.addDeserializers(deserializers);
-//            }
-//        });
-        //SimpleModule persistentEntityJackson2Module = (SimpleModule)persistentEntityJackson2Module();
-       // persistentEntityJackson2Module.addSerializer(User.class, new MyEntitySerializer());
-//    }
-//    @Override
-//    public void setupModule(Module.SetupContext context) {
-//        SimpleSerializers serializers = new SimpleSerializers();
-//        SimpleDeserializers deserializers = new SimpleDeserializers();
-//
-//        serializers.addSerializer(User.class, new MyEntitySerializer());
-//
-//
-//        context.addSerializers(serializers);
-//        context.addDeserializers(deserializers);
-//
-//    }
+        MappingJackson2HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter();
+        jacksonConverter.setObjectMapper(objectMapper());
+        jacksonConverter.setSupportedMediaTypes(mediaTypes);
+
+        return jacksonConverter;
+    }
+
+    @Override
+    protected void configureJacksonObjectMapper(ObjectMapper objectMapper) {
 
 
-//    @Override
-//    protected void configureConversionService(ConfigurableConversionService conversionService) {
-//        conversionService.addConverter(new UserCon());
-//    }
 
-//    @Override
-//    protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-//        System.out.println("**********************************");
-//        System.out.println(config.getDefaultMediaType());
-//        config.setDefaultMediaType(MediaType.APPLICATION_JSON);
-//        System.out.println("**********************************");
-//        System.out.println(config.getDefaultMediaType());
-//        //config.getResourceMappingForDomainType(User.class).getResourceMappingFor("username").setExported(false);
-////        config.setResourceMappingForDomainType(User.class)
-////                .addResourceMappingFor("username").setExported(false);
-//
-//    }
+    }
 
+    @Bean
+    public Module persistentEntityJackson2Module() {
+        return new PersistentEntityJackson2Module(resourceMappings(), defaultConversionService());
+    }
 
-//    @Bean
-//    @Override
-//    public RequestMappingHandlerMapping repositoryExporterHandlerMapping() {
-//        RepositoryRestHandlerMapping mapping = new RepositoryRestHandlerMapping(resourceMappings(), config());
-//        mapping.setJpaHelper(jpaHelper());
-//        mapping.setInterceptors(new Object[]{ new CustomInterceptor()});
-//        return mapping;
-//    }
 }
