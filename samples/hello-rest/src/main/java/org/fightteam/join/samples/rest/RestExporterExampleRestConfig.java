@@ -57,13 +57,14 @@ public class RestExporterExampleRestConfig extends RepositoryRestMvcConfiguratio
     protected void configureJacksonObjectMapper(ObjectMapper objectMapper) {
 
 
-
+        objectMapper.registerModule(new MyCustomModule());
     }
 
     @Bean
     public Module persistentEntityJackson2Module() {
         PersistentEntityJackson2Module module = new PersistentEntityJackson2Module(resourceMappings(), defaultConversionService());
-        module.addSerializer(User.class, new MyEntitySerializer());
+        //module.addSerializer(User.class, new MyEntitySerializer());
+        //module.addDeserializer(User.class, new MyEntityDeserializer());
         return module;
     }
 

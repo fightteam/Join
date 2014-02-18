@@ -68,7 +68,7 @@ public class PersistentEntityJackson2Module extends SimpleModule implements Init
         this.conversionService = conversionService;
 
         addSerializer(new ResourceSerializer());
-        addSerializer(User.class, new MyEntitySerializer());
+        //addSerializer(new MyEntitySerializer());
     }
 
     public static boolean maybeAddAssociationLink(RepositoryLinkBuilder builder, ResourceMappings mappings,
@@ -279,12 +279,7 @@ public class PersistentEntityJackson2Module extends SimpleModule implements Init
                         if (idAvailableAndShallNotBeExposed) {
                             return;
                         }
-                        System.out.println("=====================");
-                        System.out.println(property.getName());
-                        // 验证json注解
-                        if (property.isAnnotationPresent(JsonIgnore.class)){
-                            return;
-                        }
+
                         // Property is a normal or non-managed property.
                         model.put(property.getName(), wrapper.getProperty(property));
                     }

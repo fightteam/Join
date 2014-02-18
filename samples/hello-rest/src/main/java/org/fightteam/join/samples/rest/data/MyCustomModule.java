@@ -22,8 +22,8 @@ public class MyCustomModule extends SimpleModule {
         SimpleSerializers serializers = new SimpleSerializers();
         SimpleDeserializers deserializers = new SimpleDeserializers();
 
-        serializers.addSerializer(User.class, new MyEntitySerializer());
-        //deserializers.addDeserializer(User.class, new MyEntityDeserializer());
+        serializers.addSerializer(new MyEntitySerializer());
+        deserializers.addDeserializer(User.class, new MyEntityDeserializer());
 
         context.addSerializers(serializers);
         context.addDeserializers(deserializers);

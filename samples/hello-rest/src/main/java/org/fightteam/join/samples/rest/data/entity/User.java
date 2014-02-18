@@ -16,6 +16,7 @@ public class User extends AbstractEntity<Long>{
 
     @JsonIgnore
     private String username;
+    private String name;
 
     public String getUsername() {
         return username;
@@ -23,5 +24,13 @@ public class User extends AbstractEntity<Long>{
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
