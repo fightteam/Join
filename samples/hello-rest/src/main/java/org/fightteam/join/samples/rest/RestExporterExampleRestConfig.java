@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
+import org.fightteam.join.samples.rest.data.MyCustomModule;
+import org.fightteam.join.samples.rest.data.MyEntityDeserializer;
 import org.fightteam.join.samples.rest.data.MyEntitySerializer;
 import org.fightteam.join.samples.rest.data.PersistentEntityJackson2Module;
 import org.fightteam.join.samples.rest.data.entity.User;
@@ -60,7 +62,9 @@ public class RestExporterExampleRestConfig extends RepositoryRestMvcConfiguratio
 
     @Bean
     public Module persistentEntityJackson2Module() {
-        return new PersistentEntityJackson2Module(resourceMappings(), defaultConversionService());
+        PersistentEntityJackson2Module module = new PersistentEntityJackson2Module(resourceMappings(), defaultConversionService());
+        module.addSerializer(User.class, new MyEntitySerializer());
+        return module;
     }
 
 }

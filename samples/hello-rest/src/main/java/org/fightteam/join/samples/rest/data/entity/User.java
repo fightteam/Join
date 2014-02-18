@@ -1,5 +1,6 @@
 package org.fightteam.join.samples.rest.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.fightteam.join.dao.entity.AbstractEntity;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 @Entity
 public class User extends AbstractEntity<Long>{
 
+    @JsonIgnore
     private String username;
 
     public String getUsername() {

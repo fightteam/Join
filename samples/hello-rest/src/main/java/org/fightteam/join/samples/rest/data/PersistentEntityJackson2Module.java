@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.fightteam.join.samples.rest.data.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -67,6 +68,7 @@ public class PersistentEntityJackson2Module extends SimpleModule implements Init
         this.conversionService = conversionService;
 
         addSerializer(new ResourceSerializer());
+        addSerializer(User.class, new MyEntitySerializer());
     }
 
     public static boolean maybeAddAssociationLink(RepositoryLinkBuilder builder, ResourceMappings mappings,
@@ -279,6 +281,10 @@ public class PersistentEntityJackson2Module extends SimpleModule implements Init
                         }
                         System.out.println("=====================");
                         System.out.println(property.getName());
+                        // 验证json注解
+                        if (property.isAnnotationPresent(JsonIgnore.class)){
+                            return;
+                        }
                         // Property is a normal or non-managed property.
                         model.put(property.getName(), wrapper.getProperty(property));
                     }
