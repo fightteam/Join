@@ -1,6 +1,6 @@
-package org.fightteam.join.auth.data;
+package org.fightteam.join.samples.rest.data;
 
-import org.fightteam.join.auth.data.models.Role;
+import org.fightteam.join.samples.rest.data.entity.Role;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**

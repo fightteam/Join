@@ -5,6 +5,7 @@ dependencies {
     compile project(":join-log")
     compile project(":join-core")
     compile project(":join-dao")
+    compile project(":join-rest")
     // Testing
     testCompile project(":join-test")
 

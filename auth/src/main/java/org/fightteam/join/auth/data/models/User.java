@@ -1,7 +1,5 @@
 package org.fightteam.join.auth.data.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.fightteam.join.dao.entity.AbstractEntity;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -23,8 +21,7 @@ import java.util.List;
 @Entity
 public class User extends AbstractEntity<Long> {
 
-    @Description("A user's username")
-    @JsonIgnore
+    @Description("AbstractRestConfiguration user's username")
     private String username;
     private String password;
     private String email;
@@ -80,7 +77,6 @@ public class User extends AbstractEntity<Long> {
     // 用户权限
     @ManyToMany
     private List<Permission> permissions = new ArrayList<>();
-    @JsonIgnore
     public String getUsername() {
         return username;
     }

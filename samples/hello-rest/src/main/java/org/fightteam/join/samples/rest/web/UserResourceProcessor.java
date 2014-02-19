@@ -16,7 +16,7 @@ public class UserResourceProcessor implements ResourceProcessor<Resource<User>> 
 
     @Override
     public Resource<User> process(Resource<User> resource) {
-        resource.getContent().setUsername("faith");
+        //resource.getContent().setUsername("faith");
         return resource;
     }
 }
