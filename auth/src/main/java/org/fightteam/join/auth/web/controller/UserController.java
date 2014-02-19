@@ -2,9 +2,6 @@ package org.fightteam.join.auth.web.controller;
 
 import org.fightteam.join.auth.data.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.json.JsonSchema;
-import org.springframework.data.rest.webmvc.json.PersistentEntityToJsonSchemaConverter;
-import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

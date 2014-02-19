@@ -5,11 +5,11 @@ dependencies {
     compile project(":join-log")
     compile project(":join-core")
     compile project(":join-dao")
-    compile project(":join-rest")
+    //compile project(":join-rest")
     // Testing
     testCompile project(":join-test")
 
-
+    compile 'org.springframework.security.oauth:spring-security-oauth2:1.0.5.RELEASE'
     compile "org.springframework.security:spring-security-web:$springSecurityVersion",
             "org.springframework.security:spring-security-config:$springSecurityVersion"
 

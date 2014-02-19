@@ -3,7 +3,6 @@ package org.fightteam.join.auth.data.models;
 import org.fightteam.join.dao.entity.AbstractEntity;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-import org.springframework.data.rest.core.annotation.Description;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -21,7 +20,6 @@ import java.util.List;
 @Entity
 public class User extends AbstractEntity<Long> {
 
-    @Description("AbstractRestConfiguration user's username")
     private String username;
     private String password;
     private String email;
