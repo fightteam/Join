@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author faith
  * @since 0.0.1
  */
-@ContextConfiguration(classes = {RootConfig.class, TestDataConfig.class})
+@ContextConfiguration(classes = {TestDataConfig.class})
 public class SecurityConfigTest extends AbstractIntegrationTest {
 
     @Test

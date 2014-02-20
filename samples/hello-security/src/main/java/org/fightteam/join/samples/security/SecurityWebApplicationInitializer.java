@@ -1,4 +1,4 @@
-package org.fightteam.join.auth;
+package org.fightteam.join.samples.security;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;

@@ -1,9 +1,11 @@
-package org.fightteam.join.auth;
+package org.fightteam.join.samples.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -15,12 +17,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
+import org.springframework.security.oauth2.provider.error.DefaultOAuth2ExceptionRenderer;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.web.FilterInvocation;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.ExpressionBasedFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
@@ -29,8 +33,10 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -43,6 +49,13 @@ import java.util.*;
 @Configuration
 @EnableWebMvcSecurity
 public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
+
+    /**
+     * 禁用掉默认的配置
+     */
+    protected AbstractSecurityConfig() {
+        super(true);
+    }
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -74,27 +87,17 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-//        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
-//
-//        List<AccessDecisionVoter> decisionVoters = new ArrayList<>();
-//        // 角色投票器
-//        RoleVoter roleVoter = new RoleVoter();
-//        decisionVoters.add(roleVoter);
-//        // 权限投票器
-//        AuthenticatedVoter authenticatedVoter = new AuthenticatedVoter();
-//        decisionVoters.add(authenticatedVoter);
-//        // web表达式投票器
-//        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
-//        decisionVoters.add(webExpressionVoter);
-//
-//        // 决策器 (只要有一个投票器通过就通过)
-//        AffirmativeBased affirmativeBased = new AffirmativeBased(decisionVoters);
-//
-//
-//        filterSecurityInterceptor.setSecurityMetadataSource(new RestSecurityMetadataSource());
-//        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased);
-//        filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
+        http
+                .csrf().and()
+                .addFilter(new WebAsyncManagerIntegrationFilter())
+                .exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler()).and()
+                .headers().and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .securityContext().and()
+                .requestCache().and()
+                .anonymous().and()
+                .servletApi().and()
+                .logout();
 
         DigestAuthenticationFilter digestAuthenticationFilter = new DigestAuthenticationFilter();
         DigestAuthenticationEntryPoint entryPoint = new DigestAuthenticationEntryPoint();
@@ -104,14 +107,23 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
         digestAuthenticationFilter.setAuthenticationEntryPoint(entryPoint);
         digestAuthenticationFilter.setUserDetailsService(userDetailsService);
 
+
+        // 403 异常
         OAuth2AccessDeniedHandler oAuth2AccessDeniedHandler = new OAuth2AccessDeniedHandler();
+        DefaultOAuth2ExceptionRenderer renderer = new DefaultOAuth2ExceptionRenderer();
+        List<HttpMessageConverter<?>> result = new ArrayList<>();
+        result.addAll(new RestTemplate().getMessageConverters());
+        result.add(new MappingJackson2HttpMessageConverter());
+        renderer.setMessageConverters(result);
+        oAuth2AccessDeniedHandler.setExceptionRenderer(renderer);
+
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
-                .accessDeniedHandler(new AccessDeniedHandlerImpl()).and()
-                .httpBasic()
+                .accessDeniedHandler(oAuth2AccessDeniedHandler).and()
+                .httpBasic().authenticationEntryPoint(entryPoint)
                 .and()
                 .addFilterAfter(digestAuthenticationFilter, BasicAuthenticationFilter.class)
                 .addFilterBefore(filterSecurityInterceptor(), FilterSecurityInterceptor.class);
@@ -141,7 +153,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
 
         SecurityExpressionHandler<FilterInvocation> securityExpressionHandler = new DefaultWebSecurityExpressionHandler();
 
-        LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
+        LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map = new LinkedHashMap<>();
         map.put(new AntPathRequestMatcher("/1"), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasAuthority('AUTH_A@CREATE')")));
         map.put(new AntPathRequestMatcher("/**", HttpMethod.GET.name()), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasRole('ROLE_ADMIN')")));
         map.put(new AntPathRequestMatcher("/**", HttpMethod.POST.name()), Arrays.<ConfigAttribute>asList(new org.springframework.security.access.SecurityConfig("hasRole('ROLE_ADMIN')")));
@@ -166,5 +178,11 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
 
         return adm;
 
+    }
+
+    public AuthorizationEndpoint authenticationEntryPoint(){
+        AuthorizationEndpoint endpoint = new AuthorizationEndpoint();
+        //endpoint.afterPropertiesSet();
+        return endpoint;
     }
 }

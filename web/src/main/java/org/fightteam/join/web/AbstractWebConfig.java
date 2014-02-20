@@ -25,7 +25,7 @@ import java.util.Map;
  */
 //@Configuration
 @EnableWebMvc
-@ComponentScan(includeFilters = {@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(ControllerAdvice.class)},
+@ComponentScan(basePackageClasses = AbstractWebConfig.class,includeFilters = {@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(ControllerAdvice.class)},
         useDefaultFilters = false)
 public class AbstractWebConfig extends WebMvcConfigurerAdapter {
 
@@ -38,14 +38,14 @@ public class AbstractWebConfig extends WebMvcConfigurerAdapter {
 //        configurer.defaultContentType(MediaType.APPLICATION_JSON);
 //    }
 
-//    @Bean
-//    public InternalResourceViewResolver getInternalResourceViewResolver() {
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setOrder(2);
-//        resolver.setPrefix("/WEB-INF/views/");
-//        resolver.setSuffix(".jsp");
-//        return resolver;
-//    }
+    @Bean
+    public InternalResourceViewResolver getInternalResourceViewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setOrder(2);
+        resolver.setPrefix("/");
+        resolver.setSuffix(".jsp");
+        return resolver;
+    }
 
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {

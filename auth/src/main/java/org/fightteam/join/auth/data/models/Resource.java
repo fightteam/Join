@@ -2,10 +2,7 @@ package org.fightteam.join.auth.data.models;
 
 import org.fightteam.join.dao.entity.AbstractEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +16,6 @@ import java.util.List;
 public class Resource extends AbstractEntity<Long> {
     private String name;
     private String title;
-    // 用于记录权限的路径
-    private String path;
     @Enumerated
     private ResourceType type;
     private String description;
@@ -32,7 +27,7 @@ public class Resource extends AbstractEntity<Long> {
     private ResourceType resourceType;
 
     // 本资源中的权限
-    @ManyToMany(mappedBy = "resources")
+    @OneToMany(mappedBy = "resource")
     private List<Permission> permissions = new ArrayList<>();
 
     public String getName() {
@@ -49,14 +44,6 @@ public class Resource extends AbstractEntity<Long> {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public ResourceType getType() {

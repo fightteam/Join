@@ -4,6 +4,7 @@ import org.fightteam.join.dao.entity.AbstractEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Operation extends AbstractEntity<Long> {
 
     private boolean enable = true;
     // 本操作中的权限
-    @ManyToMany(mappedBy = "operations")
+    @OneToMany(mappedBy = "operation")
     private List<Permission> permissions = new ArrayList<>();
 
     public String getName() {

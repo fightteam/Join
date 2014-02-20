@@ -13,8 +13,9 @@ dependencies {
     compile project(":join-web")
     compile project(":join-auth")
 
-    compile "javax.servlet:jstl:1.2"
-    compile 'org.springframework.security.oauth:spring-security-oauth2:1.0.5.RELEASE'
+    compile "javax.servlet:jstl:1.2",
+            'mysql:mysql-connector-java:5.1.28'
+    //compile 'org.springframework.security.oauth:spring-security-oauth2:1.0.5.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.1'
 
     providedCompile "javax.servlet:javax.servlet-api:3.0.1",

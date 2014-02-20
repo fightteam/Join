@@ -1,14 +1,11 @@
 package org.fightteam.join.samples.filter;
 
-import org.fightteam.join.samples.filter.security.CORSAwareFilter;
+import org.fightteam.join.samples.filter.security.RestAuthenticationEntryPoint;
 import org.fightteam.join.samples.filter.security.RestUserDetailsService;
-import org.fightteam.join.samples.filter.test.NullSecurityContextRepository;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -21,37 +18,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.authentication.AuthenticationManagerBeanDefinitionParser;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
-import org.springframework.security.oauth2.provider.error.DefaultOAuth2ExceptionRenderer;
-import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
-import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.InMemoryTokenStore;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.FilterInvocation;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.*;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.ExpressionBasedFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -77,7 +55,7 @@ public class SecurityApplicationConfig {
     @Bean(name = "springSecurityFilterChain")
     public FilterChainProxy portalFilterChainProxy() {
 
-        List<SecurityFilterChain> securityFilterChains = new ArrayList<SecurityFilterChain>();
+        List<SecurityFilterChain> securityFilterChains = new ArrayList<>();
 
         //只需要过滤 REST服务的
         securityFilterChains.add(restSecurityFilterChain());
@@ -102,7 +80,7 @@ public class SecurityApplicationConfig {
         RequestMatcher requestMatcher = new AntPathRequestMatcher("/**");
 
         // 过滤链
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
 
         // 根据顺序和需要功能添加过滤器
 
@@ -114,7 +92,7 @@ public class SecurityApplicationConfig {
 
         // 2.SecurityContextPersistenceFilter 必须
         // 权限上下文持久化过滤器,常见是把SecurityContext信息对应到session中
-        filters.add(securityContextPersistenceFilter());
+        //filters.add(new SecurityContextPersistenceFilter());
 
         // 3.ConcurrentSessionFilter
         // SecurityContextHolder中更新SessionRegistry，以反映当前的请求中对应的principal
@@ -122,11 +100,8 @@ public class SecurityApplicationConfig {
 
         // 4.UsernamePasswordAuthenticationFilter, CasAuthenticationFilter, BasicAuthenticationFilter etc
         // 认证方式过滤器，选择其中需要的就
-        // filters.add(tokenAuthenticationFilter());
-        BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(authenticationManager(),
-                oauthProcessingFilterEntryPoint());
+        filters.add(tokenAuthenticationFilter());
 
-        filters.add(basicAuthenticationFilter);
 
         // 5.SecurityContextHolderAwareRequestFilter
         // 注入过滤器，如果你要在HttpServletRequestWrapper中使用，就要配置
@@ -233,33 +208,14 @@ public class SecurityApplicationConfig {
      */
     @Bean
     public AuthenticationManager authenticationManager() {
-
         List<AuthenticationProvider> providers = new ArrayList<>();
+        DaoAuthenticationProvider daoAP = new DaoAuthenticationProvider();
+        providers.add(daoAP);
+        AuthenticationManager authenticationManager = new ProviderManager(providers);
 
-        //PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken();
-//        DaoAuthenticationProvider daoAP = new DaoAuthenticationProvider();
-//        daoAP.setUserDetailsService(userDetailsService());
-//        providers.add(daoAP);
-        OAuth2AuthenticationManager manager = new OAuth2AuthenticationManager();
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
-        InMemoryTokenStore tokenStore = new InMemoryTokenStore();
-        DefaultOAuth2AccessToken token = new DefaultOAuth2AccessToken("1111");
-        //OAuth2Authentication authentication = new
-        //tokenStore.storeAccessToken(token, );
-        tokenServices.setTokenStore(tokenStore);
-        manager.setTokenServices(tokenServices);
-
-        return manager;
+        return authenticationManager;
     }
 
-    @Bean
-    public OAuth2AuthenticationProcessingFilter oauthFilter() {
-        OAuth2AuthenticationProcessingFilter filter = new OAuth2AuthenticationProcessingFilter();
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationEntryPoint(oauthProcessingFilterEntryPoint());
-
-        return filter;
-    }
 
 
     @Bean
@@ -299,25 +255,23 @@ public class SecurityApplicationConfig {
      */
     @Bean
     public ExceptionTranslationFilter exceptionTranslationFilter() {
-        ExceptionTranslationFilter exceptionTranslationFilter = new ExceptionTranslationFilter(oauthProcessingFilterEntryPoint());
+        ExceptionTranslationFilter exceptionTranslationFilter = new ExceptionTranslationFilter(authenticationEntryPoint());
         return exceptionTranslationFilter;
     }
 
-    /**
-     * 异常切入点
-     *
-     * 设置了json转换，使用spring mvc的默认实现
-     * @return
-     */
     @Bean
-    public OAuth2AuthenticationEntryPoint oauthProcessingFilterEntryPoint() {
-        OAuth2AuthenticationEntryPoint bean = new OAuth2AuthenticationEntryPoint();
-        DefaultOAuth2ExceptionRenderer renderer = new DefaultOAuth2ExceptionRenderer();
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-        messageConverters.add(converter);
-        renderer.setMessageConverters(messageConverters);
-        bean.setExceptionRenderer(renderer);
-        return bean;
+    public AuthenticationEntryPoint authenticationEntryPoint(){
+        AuthenticationEntryPoint entryPoint = new RestAuthenticationEntryPoint();
+        return entryPoint;
     }
+
+    @Bean
+    public UsernamePasswordAuthenticationFilter tokenAuthenticationFilter(){
+        UsernamePasswordAuthenticationFilter filter = new UsernamePasswordAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManager());
+        filter.setPostOnly(false);
+        filter.afterPropertiesSet();
+        return filter;
+    }
+
 }

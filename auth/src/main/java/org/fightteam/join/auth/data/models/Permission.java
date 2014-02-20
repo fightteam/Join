@@ -31,11 +31,11 @@ public class Permission extends AbstractEntity<Long> {
     private PermissionGroup permissionGroup;
 
     // 本权限的操作
-    @ManyToMany
-    private List<Operation> operations = new ArrayList<>();
+    @ManyToOne
+    private Operation operation;
     // 本权限的资源
-    @ManyToMany
-    private List<Resource> resources = new ArrayList<>();
+    @ManyToOne
+    private Resource resource;
 
     public String getName() {
         return name;
@@ -93,19 +93,19 @@ public class Permission extends AbstractEntity<Long> {
         this.permissionGroup = permissionGroup;
     }
 
-    public List<Resource> getResources() {
-        return resources;
+    public Operation getOperation() {
+        return operation;
     }
 
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
+    public void setOperation(Operation operation) {
+        this.operation = operation;
     }
 
-    public List<Operation> getOperations() {
-        return operations;
+    public Resource getResource() {
+        return resource;
     }
 
-    public void setOperations(List<Operation> operations) {
-        this.operations = operations;
+    public void setResource(Resource resource) {
+        this.resource = resource;
     }
 }
