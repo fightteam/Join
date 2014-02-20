@@ -1,5 +1,6 @@
 package org.fightteam.join.web;
 
+import org.fightteam.join.AbstractAppConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ import java.util.Map;
  */
 //@Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = AbstractWebConfig.class,includeFilters = {@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(ControllerAdvice.class)},
+@ComponentScan(basePackageClasses = AbstractAppConfig.class,includeFilters = {@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(ControllerAdvice.class)},
         useDefaultFilters = false)
 public class AbstractWebConfig extends WebMvcConfigurerAdapter {
 
