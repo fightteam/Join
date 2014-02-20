@@ -1,10 +1,8 @@
-package org.fightteam.join.auth;
+package org.fightteam.join.auth.service;
 
-import org.fightteam.join.auth.service.PermissionService;
-import org.fightteam.join.test.AbstractIntegrationTest;
+import org.fightteam.join.test.DataIntegrationTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * [description]
@@ -12,9 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author faith
  * @since 0.0.1
  */
-@ContextConfiguration(classes = {TestDataConfig.class})
-public class ATest extends AbstractIntegrationTest {
-
+public class UserServiceTest extends DataIntegrationTest {
     @Autowired
     private PermissionService permissionService;
 

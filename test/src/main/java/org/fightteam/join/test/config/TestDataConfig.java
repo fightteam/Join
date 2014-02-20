@@ -1,6 +1,5 @@
 package org.fightteam.join.test.config;
 
-import org.fightteam.join.dao.AbstractDataConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(basePackages = "org.fightteam")
 @EnableAsync
 @EnableTransactionManagement
-public class TestDataConfig extends AbstractDataConfig {
+public class TestDataConfig {
     private final static Logger log = LoggerFactory.getLogger(TestDataConfig.class);
     @Autowired
     private Environment environment;
