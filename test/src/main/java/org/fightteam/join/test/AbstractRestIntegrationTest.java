@@ -11,6 +11,5 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author faith
  * @since 0.0.1
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-public abstract class AbstractRestIntegrationTest {
+public class AbstractRestIntegrationTest extends AbstractIntegrationTest {
 }

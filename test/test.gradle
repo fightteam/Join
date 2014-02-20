@@ -10,7 +10,12 @@ dependencies {
     compile "org.hsqldb:hsqldb:$hsqldbVersion"
     compile "org.springframework:spring-test:$springVersion"
 
+    compile("org.springframework.data:spring-data-jpa:$springDataJpaVersion", optional)
+    compile("org.hibernate:hibernate-entitymanager:$hibernateVersion", optional)
 
-
-
+    compile "org.springframework:spring-aop:$springVersion",optional
+    compile "org.springframework:spring-core:$springVersion",optional
+    compile "org.springframework:spring-beans:$springVersion",optional
+    compile "org.springframework:spring-context:$springVersion",optional
+    runtime "cglib:cglib-nodep:$cglibVersion",optional
 }
