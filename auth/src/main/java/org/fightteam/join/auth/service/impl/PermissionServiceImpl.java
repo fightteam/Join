@@ -2,10 +2,7 @@ package org.fightteam.join.auth.service.impl;
 
 import org.fightteam.join.auth.data.PermissionRepository;
 import org.fightteam.join.auth.data.ResourceRepository;
-import org.fightteam.join.auth.data.models.Operation;
-import org.fightteam.join.auth.data.models.Permission;
-import org.fightteam.join.auth.data.models.Resource;
-import org.fightteam.join.auth.data.models.ResourceType;
+import org.fightteam.join.auth.data.models.*;
 import org.fightteam.join.auth.service.PermissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,11 +59,25 @@ public class PermissionServiceImpl implements PermissionService {
             if (configAttributes == null){
                 configAttributes = new ArrayList<>();
             }
+            // TODO: 构造角色权限
+            List<Role> roles = permission.getRoles();
+
+            for(Role role:roles){
+                ConfigAttribute configAttribute = new SecurityConfig(role.getName());
+                configAttributes.add(configAttribute);
+                RoleGroup roleGroup = role.getRoleGroup();
+
+                if (roleGroup != null){
+                    RoleGroup parent = roleGroup.getParent();
+                }
+
+            }
+
             ConfigAttribute configAttribute = new SecurityConfig(permission.getName());
             configAttributes.add(configAttribute);
             map.put(requestMatcher, configAttributes);
         }
-        // 构造角色权限
+
 
         return map;
     }

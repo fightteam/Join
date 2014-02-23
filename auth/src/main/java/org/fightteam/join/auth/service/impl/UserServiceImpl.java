@@ -3,6 +3,7 @@ package org.fightteam.join.auth.service.impl;
 import org.fightteam.join.auth.data.UserRepository;
 import org.fightteam.join.auth.data.models.Permission;
 import org.fightteam.join.auth.data.models.Role;
+import org.fightteam.join.auth.data.models.RoleGroup;
 import org.fightteam.join.auth.data.models.User;
 import org.fightteam.join.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +52,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         // 获取角色
         List<Role> roles = user.getRoles();
+        // 获取角色组
         for(Role role:roles){
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
             list.add(grantedAuthority);
+            RoleGroup roleGroup = role.getRoleGroup();
+            if (roleGroup != null){
+                grantedAuthority = new SimpleGrantedAuthority(roleGroup.getParent().getName());
+                list.add(grantedAuthority);
+            }
         }
-
 
         /**
          *    * @param username the username presented to the
