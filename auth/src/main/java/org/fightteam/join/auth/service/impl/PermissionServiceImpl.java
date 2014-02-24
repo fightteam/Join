@@ -42,39 +42,67 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> getAllURLResourcePermission() {
         LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map = new LinkedHashMap<>();
-
+        // 获取所有权限
         List<Permission> permissions = permissionRepository.findAll();
+
         for(Permission permission:permissions){
+            // 获取该权限的操作
             Operation operation = permission.getOperation();
+            // 获取该权限的资源
             Resource resource = permission.getResource();
+            // 构造拦截路径
             RequestMatcher requestMatcher = null;
             String URL = resource.getName();
             String method = operation.getName();
+            // 判断是否是正则
             if (URL.indexOf("^") == 0 || URL.charAt(URL.length()) == '$'){
                 requestMatcher = new RegexRequestMatcher(URL, method);
             }else{
                 requestMatcher = new AntPathRequestMatcher(URL, method);
             }
+            // 获取构造路径中权限，有可能没有
             Collection<ConfigAttribute> configAttributes = map.get(requestMatcher);
             if (configAttributes == null){
                 configAttributes = new ArrayList<>();
             }
-            // TODO: 构造角色权限
-            List<Role> roles = permission.getRoles();
-
-            for(Role role:roles){
-                ConfigAttribute configAttribute = new SecurityConfig(role.getName());
+            ConfigAttribute configAttribute = null;
+            // 构造权限
+            configAttribute = new SecurityConfig(permission.getName());
+            configAttributes.add(configAttribute);
+            // 获取该权限的权限组
+            PermissionGroup permissionGroup = permission.getPermissionGroup();
+            if (permissionGroup != null){
+                configAttribute = new SecurityConfig(permissionGroup.getName());
                 configAttributes.add(configAttribute);
-                RoleGroup roleGroup = role.getRoleGroup();
+                // 构造父类
+                PermissionGroup parent = permissionGroup.getParent();
+                if (parent !=null){
+                    configAttribute = new SecurityConfig(parent.getName());
+                    configAttributes.add(configAttribute);
+                }
+            }
 
+            // 获取该权限的角色
+            List<Role> roles = permission.getRoles();
+            for(Role role:roles){
+                // 构造角色权限
+                configAttribute = new SecurityConfig(role.getName());
+                configAttributes.add(configAttribute);
+                // 构造角色组
+                RoleGroup roleGroup = role.getRoleGroup();
                 if (roleGroup != null){
+                    configAttribute = new SecurityConfig(roleGroup.getName());
+                    configAttributes.add(configAttribute);
+                    // 构造父类
                     RoleGroup parent = roleGroup.getParent();
+                    if (parent != null){
+                        configAttribute = new SecurityConfig(parent.getName());
+                        configAttributes.add(configAttribute);
+                    }
                 }
 
             }
 
-            ConfigAttribute configAttribute = new SecurityConfig(permission.getName());
-            configAttributes.add(configAttribute);
             map.put(requestMatcher, configAttributes);
         }
 
@@ -83,7 +111,10 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
 
-//    private Collection<ConfigAttribute> buildURLPermission(List<Resource> resources, List<Operation> operations){
-//
-//    }
+    @Override
+    public void addPermission(Permission permission, Operation operation, Resource resource) {
+        permission.setOperation(operation);
+        permission.setResource(resource);
+        permissionRepository.save(permission);
+    }
 }

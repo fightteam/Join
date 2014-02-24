@@ -211,7 +211,7 @@
 //                            if ((tok = jp.nextToken()) == JsonToken.START_OBJECT) {
 //                                do {
 //                                    name = jp.getCurrentName();
-//                                    // TODO resolve domain object from URI
+//                                    //
 //                                    tok = jp.nextToken();
 //                                    Object mval = jp.readValueAs(persistentProperty.getMapValueType());
 //

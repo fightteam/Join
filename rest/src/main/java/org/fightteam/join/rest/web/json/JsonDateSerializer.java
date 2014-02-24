@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 /**
  * [description]
@@ -16,13 +15,8 @@ import java.text.SimpleDateFormat;
  * @since 0.0.1
  */
 public class JsonDateSerializer extends JsonSerializer<DateTime> {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-
-
     @Override
     public void serialize(DateTime value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-        System.out.println("-----------------------");
-
         jgen.writeNumber(value.getMillis());
     }
 }

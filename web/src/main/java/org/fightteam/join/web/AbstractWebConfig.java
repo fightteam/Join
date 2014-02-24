@@ -30,26 +30,4 @@ import java.util.Map;
         useDefaultFilters = false)
 public class AbstractWebConfig extends WebMvcConfigurerAdapter {
 
-//    @Override
-//    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-////        Map<String, MediaType> map = new HashMap<>();
-////        map.put("json",MediaType.APPLICATION_JSON);
-////        configurer.favorPathExtension(false)
-////                .favorParameter(true).mediaTypes(map);
-//        configurer.defaultContentType(MediaType.APPLICATION_JSON);
-//    }
-
-    @Bean
-    public InternalResourceViewResolver getInternalResourceViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setOrder(2);
-        resolver.setPrefix("/");
-        resolver.setSuffix(".jsp");
-        return resolver;
-    }
-
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/").setViewName("index");
-//    }
 }

@@ -1,12 +1,10 @@
 package org.fightteam.join.auth.service.impl;
 
 import org.fightteam.join.auth.data.UserRepository;
-import org.fightteam.join.auth.data.models.Permission;
-import org.fightteam.join.auth.data.models.Role;
-import org.fightteam.join.auth.data.models.RoleGroup;
-import org.fightteam.join.auth.data.models.User;
+import org.fightteam.join.auth.data.models.*;
 import org.fightteam.join.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +47,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         for(Permission permission:permissions){
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
             list.add(grantedAuthority);
+            // 获取权限组
+            PermissionGroup permissionGroup = permission.getPermissionGroup();
+            if(permissionGroup != null){
+                permissionGroup.getPermissions();
+                permissionGroup.getParent();
+            }
         }
         // 获取角色
         List<Role> roles = user.getRoles();
@@ -56,10 +60,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         for(Role role:roles){
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
             list.add(grantedAuthority);
+            // 获取角色组,有可能没有
             RoleGroup roleGroup = role.getRoleGroup();
             if (roleGroup != null){
-                grantedAuthority = new SimpleGrantedAuthority(roleGroup.getParent().getName());
-                list.add(grantedAuthority);
+                // 构造角色组权限，实质还是角色
+                RoleGroup parent = roleGroup.getParent();
+                List<Role> children = parent.getRoles();
+
+                for(Role r:children){
+                    grantedAuthority = new SimpleGrantedAuthority(r.getName());
+                    list.add(grantedAuthority);
+                }
+
             }
         }
 
