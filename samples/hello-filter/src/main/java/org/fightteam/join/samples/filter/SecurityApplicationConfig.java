@@ -50,7 +50,7 @@ public class SecurityApplicationConfig {
      * 具体实现由过滤链来完成
      *
      * 如果有多个过滤链就在这定义
-     * @return
+     * @return FilterChainProxy
      */
     @Bean(name = "springSecurityFilterChain")
     public FilterChainProxy portalFilterChainProxy() {
@@ -72,7 +72,7 @@ public class SecurityApplicationConfig {
      *
      * 最好参照官方的默认实现
      *
-     * @return
+     * @return SecurityFilterChain
      */
     @Bean
     public SecurityFilterChain restSecurityFilterChain() {
@@ -133,7 +133,7 @@ public class SecurityApplicationConfig {
      *
      * 常见协议:http、https等
      *
-     * @return
+     * @return ChannelProcessingFilter
      */
 //    @Bean
 //    public ChannelProcessingFilter channelProcessingFilter(){
@@ -165,7 +165,7 @@ public class SecurityApplicationConfig {
      * 必须
      *
      * 自定义权限，权限载入等等都由这关联
-     * @return
+     * @return FilterSecurityInterceptor
      */
     @Bean
     public FilterSecurityInterceptor filterSecurityInterceptor() {
@@ -187,7 +187,7 @@ public class SecurityApplicationConfig {
     /**
      * 资源管理
      *
-     * @return
+     * @return FilterInvocationSecurityMetadataSource
      */
     @Bean
     public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource() {
@@ -204,7 +204,7 @@ public class SecurityApplicationConfig {
 
     /**
      *
-     * @return
+     * @return AuthenticationManager
      */
     @Bean
     public AuthenticationManager authenticationManager() {
@@ -233,7 +233,7 @@ public class SecurityApplicationConfig {
     }
     /**
      *
-     * @return
+     * @return AccessDecisionManager
      */
     @Bean
     public AccessDecisionManager accessDecisionManager() {
@@ -251,7 +251,7 @@ public class SecurityApplicationConfig {
 
     /**
      * 异常处理
-     * @return
+     * @return ExceptionTranslationFilter
      */
     @Bean
     public ExceptionTranslationFilter exceptionTranslationFilter() {
