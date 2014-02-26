@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
-import org.fightteam.join.rest.web.json.JsonDateSerializer;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,36 +30,4 @@ public class AbstractRestConfiguration extends RepositoryRestMvcConfiguration {
         config.setDefaultMediaType(MediaType.APPLICATION_JSON);
 
     }
-
-
-    @Bean
-    @Override
-    public MappingJackson2HttpMessageConverter jacksonHttpMessageConverter() {
-
-        List<MediaType> mediaTypes = new ArrayList<MediaType>();
-        mediaTypes.addAll(Arrays.asList(MediaType.valueOf("application/json")));
-
-
-        MappingJackson2HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter();
-        jacksonConverter.setObjectMapper(objectMapper());
-        jacksonConverter.setSupportedMediaTypes(mediaTypes);
-
-        return jacksonConverter;
-    }
-
-    @Override
-    protected void configureJacksonObjectMapper(ObjectMapper objectMapper) {
-
-        objectMapper.registerModule(new SimpleModule("JoinJacksonModule") {
-
-            @Override
-            public void setupModule(Module.SetupContext context) {
-                SimpleSerializers simpleSerializers = new SimpleSerializers();
-                simpleSerializers.addSerializer(DateTime.class,new JsonDateSerializer());
-                context.addSerializers(simpleSerializers);
-            }
-        });
-
-    }
-
 }

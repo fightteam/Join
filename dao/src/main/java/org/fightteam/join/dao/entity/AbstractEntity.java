@@ -1,7 +1,9 @@
 package org.fightteam.join.dao.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.fightteam.join.rest.web.json.JsonDateSerializer;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -24,10 +26,12 @@ public abstract class AbstractEntity<T extends Serializable> {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonSerialize(using = JsonDateSerializer.class)
     private DateTime createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonSerialize(using = JsonDateSerializer.class)
     private DateTime updateDate;
 
     public Long getId() {

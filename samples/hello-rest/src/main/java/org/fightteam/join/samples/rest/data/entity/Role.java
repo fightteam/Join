@@ -1,10 +1,14 @@
 package org.fightteam.join.samples.rest.data.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.fightteam.join.dao.entity.AbstractEntity;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.springframework.data.rest.core.annotation.Description;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +21,13 @@ import java.util.List;
 @Entity
 public class Role extends AbstractEntity<Long> {
     // 用于系统使用
+    @Description(value = "a name title")
+    @NotNull
     private String name;
     // 用于呈现
+    @NotNull
     private String title;
     private String description;
-
     private boolean enable = true;
     // 角色中的用户
     @ManyToMany(mappedBy = "roles")
