@@ -2,11 +2,11 @@
 <metadata>
   <groupId>org.fightteam.join</groupId>
   <artifactId>join-test</artifactId>
-  <version>0.0.1.BUILD-SNAPSHOT</version>
+  <version>1.0.0.BUILD-SNAPSHOT</version>
   <versioning>
     <versions>
-      <version>0.0.1.BUILD-SNAPSHOT</version>
+      <version>1.0.0.BUILD-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20140124083811</lastUpdated>
+    <lastUpdated>20140226071139</lastUpdated>
   </versioning>
 </metadata>
