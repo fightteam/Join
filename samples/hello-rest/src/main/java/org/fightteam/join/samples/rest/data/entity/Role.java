@@ -1,9 +1,6 @@
 package org.fightteam.join.samples.rest.data.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.fightteam.join.dao.entity.AbstractEntity;
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 import org.springframework.data.rest.core.annotation.Description;
 
 import javax.persistence.Entity;

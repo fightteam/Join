@@ -1,9 +1,7 @@
 package org.fightteam.join.samples.rest.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.fightteam.join.dao.entity.AbstractEntity;
-import org.fightteam.join.rest.web.json.JsonDateSerializer;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.data.rest.core.annotation.Description;
@@ -42,7 +40,7 @@ public class User extends AbstractEntity<Long> {
     // 用户注册时间
     @Temporal(TemporalType.TIMESTAMP)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    @JsonSerialize(using=JsonDateSerializer.class)
+   // @JsonSerialize(using=JsonDateSerializer.class)
     private DateTime registeTime;
     // 用户注册时ip
     private String ip;
