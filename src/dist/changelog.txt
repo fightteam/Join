@@ -1,1 +1,2 @@
-0.0.1 create project
+0.0.1-BUILD-SNAPSHOT 项目构建开始
+1.0.0-BUILD-SNAPSHOT 完善了简单的框架模块
