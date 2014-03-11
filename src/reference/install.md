@@ -21,3 +21,28 @@ maven {
 
 ### 使用
 
+选择需要的依赖模块
+
+```
+compile "org.fightteam.join:join-log:1.0.0.BUILD-SNAPSHOT"
+```
+
+```
+compile "org.fightteam.join:join-core:1.0.0.BUILD-SNAPSHOT"
+```
+
+```
+compile "org.fightteam.join:join-dao:1.0.0.BUILD-SNAPSHOT"
+```
+
+```
+compile "org.fightteam.join:join-web:1.0.0.BUILD-SNAPSHOT"
+```
+
+```
+compile "org.fightteam.join:join-rest:1.0.0.BUILD-SNAPSHOT"
+```
+
+```
+testCompile "org.fightteam.join:join-test:1.0.0.BUILD-SNAPSHOT"
+```
