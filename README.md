@@ -15,6 +15,11 @@
 
 ## 贡献
 
+感谢一下对这个项目有贡献的作者。
+
+-[excalibur](http://leeln.com)
+-[fighttogether](http://fighttogether.github.io/)
+
 ## 例子
 [avalon](http://fightteam.github.io/avalon/)一个使用join开发的实例项目.
 
