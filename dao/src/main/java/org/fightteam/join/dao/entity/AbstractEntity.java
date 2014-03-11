@@ -3,7 +3,7 @@ package org.fightteam.join.dao.entity;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.fightteam.join.rest.web.json.JsonDateSerializer;
+import org.fightteam.join.core.json.JsonDateSerializer;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 

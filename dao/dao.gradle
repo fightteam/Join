@@ -3,11 +3,8 @@ apply from: "${gradleScriptDir}/maven.gradle"
 description = "join framework dao module."
 
 dependencies {
-    compile project(":join-log")
-    compile project(":join-rest", optional)
-    // Testing
-    testCompile project(":join-test")
-
+    compile (project(":join-log"), optional)
+    compile project(":join-core")
 
 
     compile("org.springframework.data:spring-data-jpa:$springDataJpaVersion", optional)
@@ -18,4 +15,6 @@ dependencies {
     compile("org.jadira.usertype:usertype.core:3.1.0.CR10", optional)
     compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion", optional)
 
+    // Testing
+    testCompile project(":join-test")
 }

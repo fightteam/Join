@@ -5,12 +5,10 @@ description = "join framework security module sample."
 
 dependencies {
     compile project(":join-log")
-    compile project(":join-core")
-    // Testing
-    testCompile project(":join-test")
-
-    compile project(":join-web")
     compile project(":join-auth")
+
+
+
 
     compile 'mysql:mysql-connector-java:5.1.28'
 
@@ -23,6 +21,7 @@ dependencies {
 
     compile 'org.springframework.security.oauth:spring-security-oauth2:1.0.5.RELEASE'
 
-
+    // Testing
+    testCompile project(":join-test")
    
 }

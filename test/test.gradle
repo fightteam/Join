@@ -2,7 +2,7 @@ apply from: "${gradleScriptDir}/maven.gradle"
 description = "oin framework junit test module."
 
 dependencies {
-    compile project(":join-log")
+    compile (project(":join-log"), optional)
 
     // Testing
     compile "junit:junit:$junitVersion"

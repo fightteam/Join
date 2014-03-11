@@ -3,9 +3,8 @@ apply from: "${gradleScriptDir}/maven.gradle"
 description = "join framework core module."
 
 dependencies {
-    compile project(":join-log")
-    // Testing
-    testCompile project(":join-test")
+    compile (project(":join-log"), optional)
+
 
     // Spring
     compile "org.springframework:spring-aop:$springVersion"
@@ -14,6 +13,14 @@ dependencies {
     compile "org.springframework:spring-context:$springVersion"
     runtime "cglib:cglib-nodep:$cglibVersion"
 
-    compile "org.springframework:spring-webmvc:$springVersion",provided
-    compile "org.springframework:spring-web:$springVersion",provided
+
+    compile("org.springframework:spring-webmvc:$springVersion",optional)
+    compile("org.springframework:spring-web:$springVersion",optional)
+    compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion", optional)
+    compile("joda-time:joda-time:$jodaVersion", optional)
+    compile("org.apache.commons:commons-lang3:3.2.1", optional)
+    compile("org.jadira.usertype:usertype.core:3.1.0.CR10", optional)
+
+    // Testing
+    testCompile project(":join-test")
 }

@@ -4,11 +4,10 @@ description = "join framework rest module."
 
 
 dependencies {
-    compile project(":join-log")
+    compile (project(":join-log"), optional)
     compile project(":join-core")
-    //compile project(":join-dao")
-    // Testing
-    testCompile project(":join-test")
+    compile (project(":join-dao"), optional)
+
 
     "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
@@ -17,4 +16,6 @@ dependencies {
     compile "org.springframework.data:spring-data-rest-core:$springDataRestVersion",
     "org.hibernate:hibernate-validator:$hibernateValidatorVersion"
 
+    // Testing
+    testCompile project(":join-test")
 }

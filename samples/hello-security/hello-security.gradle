@@ -5,12 +5,10 @@ description = "join framework security module sample."
 
 dependencies {
 
-
-    // Testing
-    testCompile project(":join-test")
-
+    compile project(":join-log")
     compile project(":join-web")
     compile project(":join-auth")
+
 
     compile "javax.servlet:jstl:1.2",
             //"org.hsqldb:hsqldb:2.2.8",
@@ -20,7 +18,8 @@ dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.0.1",
             'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
 
-
+    // Testing
+    testCompile project(":join-test")
 
    
 }

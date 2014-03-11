@@ -13,6 +13,7 @@ install {
 }
 uploadArchives {
     repositories.mavenDeployer {
+        customizePom(pom, project)
         repository(url: "file://${rootDir}/build/mvn-repo")
     }
 }

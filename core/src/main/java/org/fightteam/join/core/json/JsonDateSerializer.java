@@ -1,4 +1,4 @@
-package org.fightteam.join.rest.web.json;
+package org.fightteam.join.core.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

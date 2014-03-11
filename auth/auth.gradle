@@ -5,12 +5,13 @@ configurations { providedCompile }
 
 
 dependencies {
-    compile project(":join-log")
-    compile project(":join-core")
-    compile project(":join-dao")
-    compile project(":join-rest")
-    // Testing
-    testCompile project(":join-test")
+    compile(project(":join-log"), optional)
+
+    compile(project(":join-rest"), optional)
+    compile(project(":join-web"), optional)
+    compile(project(":join-dao"), optional)
+
+
 
     compile "org.springframework.security:spring-security-web:$springSecurityVersion",
             "org.springframework.security:spring-security-config:$springSecurityVersion"
@@ -18,4 +19,7 @@ dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.0.1",
             'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
 
+
+    // Testing
+    testCompile project(":join-test")
 }

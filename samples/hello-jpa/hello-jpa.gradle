@@ -4,11 +4,10 @@ description = "join framework dao module sample."
 
 dependencies {
     compile project(":join-log")
-    compile project(":join-core")
-    // Testing
-    testCompile project(":join-test")
-
     compile project(":join-dao")
+
+
+
 
     compile "org.springframework:spring-tx:$springVersion"
 
@@ -18,4 +17,7 @@ dependencies {
 
     compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final"
+
+    // Testing
+    testCompile project(":join-test")
 }
