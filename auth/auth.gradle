@@ -1,6 +1,9 @@
 apply from: "${gradleScriptDir}/maven.gradle"
 description = "join framework auth module."
 
+configurations { providedCompile }
+
+
 dependencies {
     compile project(":join-log")
     compile project(":join-core")
@@ -12,7 +15,7 @@ dependencies {
     compile "org.springframework.security:spring-security-web:$springSecurityVersion",
             "org.springframework.security:spring-security-config:$springSecurityVersion"
 
-    compile "javax.servlet:javax.servlet-api:3.0.1",provided
-    compile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1',provided
+    providedCompile "javax.servlet:javax.servlet-api:3.0.1",
+            'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
 
 }
