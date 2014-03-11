@@ -6,7 +6,7 @@
 
 - [简单介绍](https://github.com/fightteam/Join/blob/master/src/reference/intro.md)
 - [安装使用](https://github.com/fightteam/Join/blob/master/src/reference/install.md)
-- [基础模块简介](https://github.com/fightteam/Join/blob/master/src/reference/security.md)
+- [基础模块简介](https://github.com/fightteam/Join/blob/master/src/reference/core.md)
 - [日志模块简介](https://github.com/fightteam/Join/blob/master/src/reference/logger.md)
 - [dao模块简介](https://github.com/fightteam/Join/blob/master/src/reference/dao.md)
 - [web模块简介](https://github.com/fightteam/Join/blob/master/src/reference/web.md)
