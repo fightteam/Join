@@ -1,6 +1,6 @@
 # Join [![Build Status](https://travis-ci.org/fightteam/Join.png)](https://travis-ci.org/fightteam/Join)
 
-基于spring、spring-data等的一个基础配置，可以很方便的开发系统。
+基于spring、spring-data等的一个基础配置，可以很方便的开发系统。拆分了多个独立模块，可以单独使用。
 
 ## 文档
 
