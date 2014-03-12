@@ -12,10 +12,18 @@ dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.0.1",
             'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
 
-
+    compile "org.springframework.data:spring-data-commons:$springDataCommonsVersion"
     compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
             'mysql:mysql-connector-java:5.1.28',
             "org.hibernate:hibernate-validator:$hibernateValidatorVersion"
+    compile("org.springframework.data:spring-data-jpa:$springDataJpaVersion")
+
+    compile("org.hibernate:hibernate-entitymanager:$hibernateVersion")
+    compile("org.springframework.data:spring-data-redis:$springDataRedisVersion")
+    compile("joda-time:joda-time:$jodaVersion",)
+    compile("org.apache.commons:commons-lang3:3.2.1")
+    compile("org.jadira.usertype:usertype.core:3.1.0.CR10")
+    compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 
     // Testing
     testCompile project(":join-test")
