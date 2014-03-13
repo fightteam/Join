@@ -9,7 +9,9 @@ import org.joda.time.DateTime;
 import java.io.IOException;
 
 /**
- * [description]
+ * jodaTime json输出格式
+ * <p/>
+ * 以毫秒输出
  *
  * @author faith
  * @since 0.0.1

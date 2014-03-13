@@ -2,7 +2,7 @@ package org.fightteam.join.core.common;
 
 /**
  * 公共关键字类
- *
+ * <p/>
  * 提供了一些系统常用关键字，方便使用，也方便修改。
  *
  * @author faith

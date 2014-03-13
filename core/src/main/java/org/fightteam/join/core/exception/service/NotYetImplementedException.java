@@ -4,7 +4,7 @@ import org.fightteam.join.core.exception.BaseException;
 
 /**
  * 没有实现异常
- *
+ * <p/>
  * 在业务逻辑定义接口时候通常会有没有实现的，为了明白其运行过程。
  * 应该抛出这个异常
  *
