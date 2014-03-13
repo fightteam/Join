@@ -2,21 +2,14 @@ package org.fightteam.join.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -30,27 +23,29 @@ import javax.sql.DataSource;
  * @author faith
  * @since 0.0.1
  */
-@Configuration
-@EnableJpaRepositories(basePackages = "org.fightteam")
-@EnableAsync
-@EnableTransactionManagement
-public class AbstractDataConfig {
+public abstract class AbstractDataConfig {
 
     private final static Logger log = LoggerFactory.getLogger(AbstractDataConfig.class);
-    @Autowired
-    private Environment environment;
 
-    private Database databaseType;
+    private Database databaseType = Database.MYSQL;
+
+    private String packagesToScanPath = "org.fightteam";
+
+    private String envContextName = "java:/comp/env";
+
+    private String lookupName = "jdbc/database";
+
+    private boolean generateDdl = true;
 
     @Bean
     public DataSource dataSource() {
-       try {
+        try {
             Context ctx = new InitialContext();
-            Context envContext = (Context)ctx.lookup("java:/comp/env");
-            DataSource ds = (DataSource)envContext.lookup("jdbc/database");
+            Context envContext = (Context) ctx.lookup(getEnvContextName());
+            DataSource ds = (DataSource) envContext.lookup(getLookupName());
             return ds;
         } catch (NamingException e) {
-            log.error("create data source error",e);
+            log.error("create data source error", e);
         }
         return null;
     }
@@ -59,12 +54,12 @@ public class AbstractDataConfig {
     public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
-        vendorAdapter.setDatabase(Database.MYSQL);
-        vendorAdapter.setGenerateDdl(true);
+        vendorAdapter.setDatabase(getDatabaseType());
+        vendorAdapter.setGenerateDdl(isGenerateDdl());
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("org.fightteam");
+        factory.setPackagesToScan(getPackagesToScanPath());
         factory.setDataSource(dataSource());
 
         factory.afterPropertiesSet();
@@ -84,4 +79,43 @@ public class AbstractDataConfig {
         return txManager;
     }
 
+    public String getPackagesToScanPath() {
+        return packagesToScanPath;
+    }
+
+    public void setPackagesToScanPath(String packagesToScanPath) {
+        this.packagesToScanPath = packagesToScanPath;
+    }
+
+    public String getEnvContextName() {
+        return envContextName;
+    }
+
+    public void setEnvContextName(String envContextName) {
+        this.envContextName = envContextName;
+    }
+
+    public String getLookupName() {
+        return lookupName;
+    }
+
+    public void setLookupName(String lookupName) {
+        this.lookupName = lookupName;
+    }
+
+    public Database getDatabaseType() {
+        return databaseType;
+    }
+
+    public void setDatabaseType(Database databaseType) {
+        this.databaseType = databaseType;
+    }
+
+    public boolean isGenerateDdl() {
+        return generateDdl;
+    }
+
+    public void setGenerateDdl(boolean generateDdl) {
+        this.generateDdl = generateDdl;
+    }
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  * 抽象对象
- *
+ * <p/>
  * 覆写了equals、hashCode
  *
  * @author faith
@@ -25,12 +25,12 @@ public abstract class AbstractEntity<T extends Serializable> {
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = JsonDateSerializer.class)
     private DateTime createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = JsonDateSerializer.class)
     private DateTime updateDate;
 
@@ -62,6 +62,7 @@ public abstract class AbstractEntity<T extends Serializable> {
         createDate = new DateTime();
         updateDate = new DateTime();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
