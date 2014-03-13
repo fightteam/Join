@@ -29,8 +29,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * spring security 3.2配置
@@ -40,7 +40,7 @@ import java.util.*;
  */
 @Configuration
 @EnableWebMvcSecurity
-public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
+public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PermissionService permissionService;
@@ -51,6 +51,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
     /**
      * 主要配置哪里载入用户信息
      * 包括信息的验证方式等等
+     *
      * @param auth
      * @throws Exception
      */
@@ -78,6 +79,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
     /**
      * 主要配置哪里录入信息
      * 以及需要权限的资源等
+     *
      * @param http
      * @throws Exception
      */
@@ -91,8 +93,6 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
         entryPoint.setNonceValiditySeconds(10);
         digestAuthenticationFilter.setAuthenticationEntryPoint(entryPoint);
         digestAuthenticationFilter.setUserDetailsService(userDetailsService);
-
-
 
 
         http
@@ -131,6 +131,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
     public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource() {
         return ResourceDetailsBuilder.createUrlSource(permissionService.getAllURLResourcePermission());
     }
+
     @Bean
     public AccessDecisionManager accessDecisionManager() {
 

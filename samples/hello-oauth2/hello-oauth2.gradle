@@ -23,5 +23,5 @@ dependencies {
 
     // Testing
     testCompile project(":join-test")
-   
+
 }

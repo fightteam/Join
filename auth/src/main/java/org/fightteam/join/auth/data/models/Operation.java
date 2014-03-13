@@ -3,7 +3,6 @@ package org.fightteam.join.auth.data.models;
 import org.fightteam.join.dao.entity.AbstractEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;

@@ -2,7 +2,8 @@ apply from: "${gradleScriptDir}/maven.gradle"
 description = "oin framework junit test module."
 
 dependencies {
-    compile (project(":join-log"), optional)
+    compile(project(":join-log"), optional)
+    compile(project(":join-dao"), optional)
 
     // Testing
     compile "junit:junit:$junitVersion"
@@ -13,9 +14,9 @@ dependencies {
     compile("org.springframework.data:spring-data-jpa:$springDataJpaVersion", optional)
     compile("org.hibernate:hibernate-entitymanager:$hibernateVersion", optional)
 
-    compile "org.springframework:spring-aop:$springVersion",optional
-    compile "org.springframework:spring-core:$springVersion",optional
-    compile "org.springframework:spring-beans:$springVersion",optional
-    compile "org.springframework:spring-context:$springVersion",optional
-    runtime "cglib:cglib-nodep:$cglibVersion",optional
+    compile "org.springframework:spring-aop:$springVersion", optional
+    compile "org.springframework:spring-core:$springVersion", optional
+    compile "org.springframework:spring-beans:$springVersion", optional
+    compile "org.springframework:spring-context:$springVersion", optional
+    runtime "cglib:cglib-nodep:$cglibVersion", optional
 }

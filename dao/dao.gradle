@@ -3,7 +3,7 @@ apply from: "${gradleScriptDir}/maven.gradle"
 description = "join framework dao module."
 
 dependencies {
-    compile (project(":join-log"), optional)
+    compile(project(":join-log"), optional)
     compile project(":join-core")
 
 

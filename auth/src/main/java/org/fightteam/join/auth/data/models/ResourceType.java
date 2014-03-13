@@ -9,6 +9,7 @@ package org.fightteam.join.auth.data.models;
 public enum ResourceType {
 
     URL, METHOD, ACL, MODULE;
+
     public String toString() {
         if (this == URL) return "URL限制";
         if (this == METHOD) return "方法限制";

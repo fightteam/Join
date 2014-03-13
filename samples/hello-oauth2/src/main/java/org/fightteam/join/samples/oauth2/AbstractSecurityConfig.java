@@ -17,7 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -48,7 +47,7 @@ import java.util.*;
  */
 @Configuration
 @EnableWebMvcSecurity
-public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
+public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 禁用掉默认的配置
@@ -63,6 +62,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
     /**
      * 主要配置哪里载入用户信息
      * 包括信息的验证方式等等
+     *
      * @param auth
      * @throws Exception
      */
@@ -73,6 +73,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
         auth.userDetailsService(userDetailsService);
 
     }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -82,6 +83,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
     /**
      * 主要配置哪里录入信息
      * 以及需要权限的资源等
+     *
      * @param http
      * @throws Exception
      */
@@ -163,6 +165,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
 
         return ms;
     }
+
     @Bean
     public AccessDecisionManager accessDecisionManager() {
 
@@ -180,7 +183,7 @@ public class AbstractSecurityConfig extends WebSecurityConfigurerAdapter{
 
     }
 
-    public AuthorizationEndpoint authenticationEntryPoint(){
+    public AuthorizationEndpoint authenticationEntryPoint() {
         AuthorizationEndpoint endpoint = new AuthorizationEndpoint();
         //endpoint.afterPropertiesSet();
         return endpoint;

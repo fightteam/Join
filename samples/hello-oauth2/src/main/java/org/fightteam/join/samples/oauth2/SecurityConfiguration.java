@@ -34,27 +34,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-                 http
-            .authorizeRequests().antMatchers("/login.jsp").permitAll().and()
-            .authorizeRequests()
+        http
+                .authorizeRequests().antMatchers("/login.jsp").permitAll().and()
+                .authorizeRequests()
                 .anyRequest().hasRole("USER")
                 .and()
-            .exceptionHandling()
+                .exceptionHandling()
                 .accessDeniedPage("/login.jsp?authorization_error=true")
                 .and()
-            //
-            .csrf()
+                        //
+                .csrf()
                 .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize")).disable()
-            .logout()
+                .logout()
                 .logoutSuccessUrl("/index.jsp")
                 .logoutUrl("/logout.do")
                 .and()
-            .formLogin()
-                    .usernameParameter("j_username")
-                    .passwordParameter("j_password")
-                    .failureUrl("/login.jsp?authentication_error=true")
-                    .loginPage("/login.jsp")
-                    .loginProcessingUrl("/login.do");
+                .formLogin()
+                .usernameParameter("j_username")
+                .passwordParameter("j_password")
+                .failureUrl("/login.jsp?authentication_error=true")
+                .loginPage("/login.jsp")
+                .loginProcessingUrl("/login.do");
         // @formatter:on
     }
 }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 简单测试类
+ *
  * @author excalibur
  * @since 0.0.1
  */
@@ -12,11 +13,11 @@ public class User {
     private final static Logger log = LoggerFactory.getLogger(User.class);
 
 
-    public void info(){
+    public void info() {
         log.info("info test");
     }
 
-    public void debug(){
+    public void debug() {
         log.debug("debug test");
     }
 }

@@ -1,9 +1,5 @@
 package org.fightteam.join.auth.security;
 
-import org.fightteam.join.auth.service.OperationService;
-import org.fightteam.join.auth.service.PermissionService;
-import org.fightteam.join.auth.service.ResourceService;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.web.FilterInvocation;
@@ -11,15 +7,13 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 import org.springframework.security.web.access.expression.ExpressionBasedFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * 权限资源构造类
- *
+ * <p/>
  * 该类支持基于特定类型的权限构建资源，该资源用来支持系统权限拦截
  *
  * @author faith
@@ -30,7 +24,7 @@ public class ResourceDetailsBuilder {
     /**
      * 禁用构造反法禁止实例化该对象
      */
-    private ResourceDetailsBuilder(){
+    private ResourceDetailsBuilder() {
 
     }
 
@@ -41,13 +35,13 @@ public class ResourceDetailsBuilder {
      * @param map
      * @return
      */
-    public static FilterInvocationSecurityMetadataSource createUrlSource(LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map){
+    public static FilterInvocationSecurityMetadataSource createUrlSource(LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map) {
         SecurityExpressionHandler<FilterInvocation> securityExpressionHandler = new DefaultWebSecurityExpressionHandler();
         ExpressionBasedFilterInvocationSecurityMetadataSource ms = new ExpressionBasedFilterInvocationSecurityMetadataSource(map, securityExpressionHandler);
         return ms;
     }
 
-    public void createMethodSource(){
+    public void createMethodSource() {
 
     }
 

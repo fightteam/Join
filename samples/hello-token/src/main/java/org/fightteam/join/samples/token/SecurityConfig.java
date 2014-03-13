@@ -1,25 +1,20 @@
 package org.fightteam.join.samples.token;
 
-import org.fightteam.join.samples.token.security.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.fightteam.join.samples.token.security.RestSecurityMetadataSource;
+import org.fightteam.join.samples.token.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
-import org.springframework.security.access.vote.UnanimousBased;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
@@ -38,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 主要配置哪里载入用户信息
      * 包括信息的验证方式等等
+     *
      * @param auth
      * @throws Exception
      */
@@ -53,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 主要配置哪里录入信息
      * 以及需要权限的资源等
+     *
      * @param http
      * @throws Exception
      */
@@ -89,13 +86,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.httpBasic()
                 .and()
-        .addFilterAfter(digestAuthenticationFilter, BasicAuthenticationFilter.class)
-        .exceptionHandling().authenticationEntryPoint(digestAuthenticationEntryPoint)
-            .and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-        .authorizeRequests().antMatchers("/**").hasRole("ADMIN").and()
-        .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class);
+                .addFilterAfter(digestAuthenticationFilter, BasicAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(digestAuthenticationEntryPoint)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests().antMatchers("/**").hasRole("ADMIN").and()
+                .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class);
 
     }
 

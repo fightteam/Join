@@ -7,9 +7,9 @@ ext.optional = { optionalDeps << it }
 ext.provided = { providedDeps << it }
 
 install {
-  repositories.mavenInstaller {
-    customizePom(pom, project)
-  }
+    repositories.mavenInstaller {
+        customizePom(pom, project)
+    }
 }
 uploadArchives {
     repositories.mavenDeployer {
@@ -17,49 +17,50 @@ uploadArchives {
         repository(url: "file://${rootDir}/build/mvn-repo")
     }
 }
+
 def customizePom(pom, gradleProject) {
-  pom.whenConfigured { generatedPom ->
-    // respect 'optional' and 'provided' dependencies
-    gradleProject.optionalDeps.each { dep ->
-      generatedPom.dependencies.find { it.artifactId == dep.name }?.optional = true
-    }
-    gradleProject.providedDeps.each { dep ->
-      generatedPom.dependencies.find { it.artifactId == dep.name }?.scope = 'provided'
-    }
-
-    // eliminate test-scoped dependencies (no need in maven central poms)
-    generatedPom.dependencies.removeAll { dep ->
-      dep.scope == 'test'
-    }
-
-    // add all items necessary for maven central publication
-    generatedPom.project {
-      name = "Join framework"
-      description = "a sample framework to solove config."
-      url = 'http://github.com/fightteam/Join'
-      organization {
-        name = 'FightTeam'
-        url = 'http://fightteam.github.io'
-      }
-      licenses {
-        license {
-          name 'The Apache Software License, Version 2.0'
-          url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-          distribution 'repo'
+    pom.whenConfigured { generatedPom ->
+        // respect 'optional' and 'provided' dependencies
+        gradleProject.optionalDeps.each { dep ->
+            generatedPom.dependencies.find { it.artifactId == dep.name }?.optional = true
         }
-      }
-      scm {
-        url = 'http://github.com/fightteam/Join'
-        connection = 'scm:git:git://github.com/fightteam/Join'
-        developerConnection = 'scm:git:git://github.com/fightteam/Join'
-      }
-      developers {
-        developer {
-          id = 'excalibur'
-          name = 'excalibur'
-          email = 'lzy7750015@gmail.com'
+        gradleProject.providedDeps.each { dep ->
+            generatedPom.dependencies.find { it.artifactId == dep.name }?.scope = 'provided'
         }
-      }
+
+        // eliminate test-scoped dependencies (no need in maven central poms)
+        generatedPom.dependencies.removeAll { dep ->
+            dep.scope == 'test'
+        }
+
+        // add all items necessary for maven central publication
+        generatedPom.project {
+            name = "Join framework"
+            description = "a sample framework to solove config."
+            url = 'http://github.com/fightteam/Join'
+            organization {
+                name = 'FightTeam'
+                url = 'http://fightteam.github.io'
+            }
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url = 'http://github.com/fightteam/Join'
+                connection = 'scm:git:git://github.com/fightteam/Join'
+                developerConnection = 'scm:git:git://github.com/fightteam/Join'
+            }
+            developers {
+                developer {
+                    id = 'excalibur'
+                    name = 'excalibur'
+                    email = 'lzy7750015@gmail.com'
+                }
+            }
+        }
     }
-  }
 }

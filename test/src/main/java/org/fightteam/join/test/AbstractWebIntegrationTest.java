@@ -1,5 +1,7 @@
 package org.fightteam.join.test;
 
+import org.springframework.test.context.web.WebAppConfiguration;
+
 /**
  * 抽象初始化测试类
  * <p/>
@@ -8,5 +10,6 @@ package org.fightteam.join.test;
  * @author faith
  * @since 0.0.1
  */
-public class AbstractRestIntegrationTest extends AbstractIntegrationTest {
+@WebAppConfiguration
+public class AbstractWebIntegrationTest extends AbstractIntegrationTest {
 }

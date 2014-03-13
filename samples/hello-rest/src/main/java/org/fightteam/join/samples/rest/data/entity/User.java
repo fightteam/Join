@@ -39,29 +39,29 @@ public class User extends AbstractEntity<Long> {
     private boolean enabled = true;
     // 用户注册时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-   // @JsonSerialize(using=JsonDateSerializer.class)
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    // @JsonSerialize(using=JsonDateSerializer.class)
     private DateTime registeTime;
     // 用户注册时ip
     private String ip;
     // 用户最近登录时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime loginTime;
     // 用户最近注销时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime logoutTime;
     // 最近一次用户登录ip
     private String loginIp;
     @Temporal(TemporalType.TIMESTAMP)
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastLogoutTime;
     // 默认密码时间 -1 表示不限制
     private Integer passwordExpiredDays = -1;
     // 更改密码时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime passwordChangeTime;
     // 能否同时登录
     private boolean loginAtSameTime = false;

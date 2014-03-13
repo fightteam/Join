@@ -7,7 +7,6 @@ import org.fightteam.join.auth.service.PermissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -45,7 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
         // 获取所有权限
         List<Permission> permissions = permissionRepository.findAll();
 
-        for(Permission permission:permissions){
+        for (Permission permission : permissions) {
             // 获取该权限的操作
             Operation operation = permission.getOperation();
             // 获取该权限的资源
@@ -55,14 +54,14 @@ public class PermissionServiceImpl implements PermissionService {
             String URL = resource.getName();
             String method = operation.getName();
             // 判断是否是正则
-            if (URL.indexOf("^") == 0 || URL.charAt(URL.length()) == '$'){
+            if (URL.indexOf("^") == 0 || URL.charAt(URL.length()) == '$') {
                 requestMatcher = new RegexRequestMatcher(URL, method);
-            }else{
+            } else {
                 requestMatcher = new AntPathRequestMatcher(URL, method);
             }
             // 获取构造路径中权限，有可能没有
             Collection<ConfigAttribute> configAttributes = map.get(requestMatcher);
-            if (configAttributes == null){
+            if (configAttributes == null) {
                 configAttributes = new ArrayList<>();
             }
             ConfigAttribute configAttribute = null;
@@ -71,12 +70,12 @@ public class PermissionServiceImpl implements PermissionService {
             configAttributes.add(configAttribute);
             // 获取该权限的权限组
             PermissionGroup permissionGroup = permission.getPermissionGroup();
-            if (permissionGroup != null){
+            if (permissionGroup != null) {
                 configAttribute = new SecurityConfig(permissionGroup.getName());
                 configAttributes.add(configAttribute);
                 // 构造父类
                 PermissionGroup parent = permissionGroup.getParent();
-                if (parent !=null){
+                if (parent != null) {
                     configAttribute = new SecurityConfig(parent.getName());
                     configAttributes.add(configAttribute);
                 }
@@ -84,18 +83,18 @@ public class PermissionServiceImpl implements PermissionService {
 
             // 获取该权限的角色
             List<Role> roles = permission.getRoles();
-            for(Role role:roles){
+            for (Role role : roles) {
                 // 构造角色权限
                 configAttribute = new SecurityConfig(role.getName());
                 configAttributes.add(configAttribute);
                 // 构造角色组
                 RoleGroup roleGroup = role.getRoleGroup();
-                if (roleGroup != null){
+                if (roleGroup != null) {
                     configAttribute = new SecurityConfig(roleGroup.getName());
                     configAttributes.add(configAttribute);
                     // 构造父类
                     RoleGroup parent = roleGroup.getParent();
-                    if (parent != null){
+                    if (parent != null) {
                         configAttribute = new SecurityConfig(parent.getName());
                         configAttributes.add(configAttribute);
                     }

@@ -34,13 +34,13 @@ public class DataConfigTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testSave(){
+    public void testSave() {
         userRepository.save(user);
-        Assert.assertNotEquals(0,user.getId());
+        Assert.assertNotEquals(0, user.getId());
     }
 
     @Test
-    public void testFind(){
+    public void testFind() {
         testSave();
         User u = userRepository.findByUsername(user.getUsername());
         Assert.assertNotNull(u);

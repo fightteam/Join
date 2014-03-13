@@ -21,22 +21,22 @@ def String[] samples = [
 ]
 include modules
 
-modules.each {name ->
+modules.each { name ->
     def p = findProject(":${name}")
     p.name = "join-${name}"
-    if ("${name}".indexOf(":") != -1){
+    if ("${name}".indexOf(":") != -1) {
         name = "build"
     }
     p.buildFileName = "${name}.gradle"
 }
 
 include samples
-samples.each {name ->
+samples.each { name ->
     def p = findProject(":${name}")
-    def fullName = name.replaceAll('/','')
+    def fullName = name.replaceAll('/', '')
     p.name = "join-samples-${fullName}"
     p.projectDir = new File(settingsDir, "samples/${name}");
-    if(!p.buildFile.exists()) {
+    if (!p.buildFile.exists()) {
         def buildFile = "${fullName}"
         p.buildFileName = "${buildFile}.gradle"
     }

@@ -1,6 +1,5 @@
 package org.fightteam.join.samples.token.security;
 
-import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -26,9 +25,8 @@ public class RestAccessDecisionManager extends AbstractAccessDecisionManager {
     }
 
     /**
-     *
-     * @param authentication 用户信息
-     * @param object 请求路径
+     * @param authentication   用户信息
+     * @param object           请求路径
      * @param configAttributes 需求权限
      * @throws AccessDeniedException
      * @throws InsufficientAuthenticationException

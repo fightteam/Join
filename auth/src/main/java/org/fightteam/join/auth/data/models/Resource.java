@@ -2,7 +2,10 @@ package org.fightteam.join.auth.data.models;
 
 import org.fightteam.join.dao.entity.AbstractEntity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 

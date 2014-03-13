@@ -4,7 +4,6 @@ import org.fightteam.join.auth.data.UserRepository;
 import org.fightteam.join.auth.data.models.*;
 import org.fightteam.join.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +16,7 @@ import java.util.List;
 
 /**
  * 用户业务逻辑实现
- *
+ * <p/>
  * 实现了Spring security的UserDetailsService
  *
  * @author faith
@@ -28,8 +27,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
     /**
      * 载入用户信息
+     *
      * @param username
      * @return
      * @throws UsernameNotFoundException 没有该用户
@@ -38,18 +39,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 载入用户信息
         User user = userRepository.findByUsername(username);
-        if (user == null){
-            throw new UsernameNotFoundException("couldn't find user by username:"+username);
+        if (user == null) {
+            throw new UsernameNotFoundException("couldn't find user by username:" + username);
         }
         List<GrantedAuthority> list = new ArrayList<>();
         // 获取权限
-        List<Permission> permissions =user.getPermissions();
-        for(Permission permission:permissions){
+        List<Permission> permissions = user.getPermissions();
+        for (Permission permission : permissions) {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
             list.add(grantedAuthority);
             // 获取权限组
             PermissionGroup permissionGroup = permission.getPermissionGroup();
-            if(permissionGroup != null){
+            if (permissionGroup != null) {
                 permissionGroup.getPermissions();
                 permissionGroup.getParent();
             }
@@ -57,17 +58,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         // 获取角色
         List<Role> roles = user.getRoles();
         // 获取角色组
-        for(Role role:roles){
+        for (Role role : roles) {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
             list.add(grantedAuthority);
             // 获取角色组,有可能没有
             RoleGroup roleGroup = role.getRoleGroup();
-            if (roleGroup != null){
+            if (roleGroup != null) {
                 // 构造角色组权限，实质还是角色
                 RoleGroup parent = roleGroup.getParent();
                 List<Role> children = parent.getRoles();
 
-                for(Role r:children){
+                for (Role r : children) {
                     grantedAuthority = new SimpleGrantedAuthority(r.getName());
                     list.add(grantedAuthority);
                 }

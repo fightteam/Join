@@ -4,8 +4,6 @@ import org.fightteam.join.samples.filter.security.RestAuthenticationEntryPoint;
 import org.fightteam.join.samples.filter.security.RestUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -27,8 +25,6 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -46,10 +42,11 @@ public class SecurityApplicationConfig {
 
     /**
      * 代理过滤器
-     *
+     * <p/>
      * 具体实现由过滤链来完成
-     *
+     * <p/>
      * 如果有多个过滤链就在这定义
+     *
      * @return FilterChainProxy
      */
     @Bean(name = "springSecurityFilterChain")
@@ -67,9 +64,9 @@ public class SecurityApplicationConfig {
 
     /**
      * 过滤链
-     *
+     * <p/>
      * 根据自己的需要定义出一个过滤链
-     *
+     * <p/>
      * 最好参照官方的默认实现
      *
      * @return SecurityFilterChain
@@ -96,7 +93,7 @@ public class SecurityApplicationConfig {
 
         // 3.ConcurrentSessionFilter
         // SecurityContextHolder中更新SessionRegistry，以反映当前的请求中对应的principal
-       // filters.add(securityContextHolderAwareRequestFilter());
+        // filters.add(securityContextHolderAwareRequestFilter());
 
         // 4.UsernamePasswordAuthenticationFilter, CasAuthenticationFilter, BasicAuthenticationFilter etc
         // 认证方式过滤器，选择其中需要的就
@@ -109,7 +106,6 @@ public class SecurityApplicationConfig {
 
         // 6.JaasApiIntegrationFilter
         // 如果JaasAuthenticationToken在SecurityContextHolder中，Subject将会在JaasAuthenticationToken中贯穿整个过滤链
-
 
 
         // 7.RememberMeAuthenticationFilter
@@ -130,7 +126,7 @@ public class SecurityApplicationConfig {
 
     /**
      * 协议过滤器
-     *
+     * <p/>
      * 常见协议:http、https等
      *
      * @return ChannelProcessingFilter
@@ -159,12 +155,14 @@ public class SecurityApplicationConfig {
 //    public AbstractAuthenticationProcessingFilter tokenAuthenticationFilter(){
 //        Authentication
 //    }
+
     /**
      * 权限接入
-     *
+     * <p/>
      * 必须
-     *
+     * <p/>
      * 自定义权限，权限载入等等都由这关联
+     *
      * @return FilterSecurityInterceptor
      */
     @Bean
@@ -203,7 +201,6 @@ public class SecurityApplicationConfig {
     }
 
     /**
-     *
      * @return AuthenticationManager
      */
     @Bean
@@ -217,7 +214,6 @@ public class SecurityApplicationConfig {
     }
 
 
-
     @Bean
     public AuthenticationProvider daoAuthenticationProvider() {
 
@@ -226,13 +222,14 @@ public class SecurityApplicationConfig {
         return p;
 
     }
+
     @Bean
     public UserDetailsService userDetailsService() {
 
         return new RestUserDetailsService();
     }
+
     /**
-     *
      * @return AccessDecisionManager
      */
     @Bean
@@ -251,6 +248,7 @@ public class SecurityApplicationConfig {
 
     /**
      * 异常处理
+     *
      * @return ExceptionTranslationFilter
      */
     @Bean
@@ -260,13 +258,13 @@ public class SecurityApplicationConfig {
     }
 
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint(){
+    public AuthenticationEntryPoint authenticationEntryPoint() {
         AuthenticationEntryPoint entryPoint = new RestAuthenticationEntryPoint();
         return entryPoint;
     }
 
     @Bean
-    public UsernamePasswordAuthenticationFilter tokenAuthenticationFilter(){
+    public UsernamePasswordAuthenticationFilter tokenAuthenticationFilter() {
         UsernamePasswordAuthenticationFilter filter = new UsernamePasswordAuthenticationFilter();
         filter.setAuthenticationManager(authenticationManager());
         filter.setPostOnly(false);

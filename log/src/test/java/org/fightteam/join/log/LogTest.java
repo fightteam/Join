@@ -12,13 +12,14 @@ import org.junit.Test;
 public class LogTest {
 
     private LogTestHelper logTestHelper;
+
     @Before
     public void setUp() throws Exception {
         logTestHelper = new LogTestHelper();
     }
 
     @Test
-    public void testInfo(){
+    public void testInfo() {
         logTestHelper.info();
     }
 

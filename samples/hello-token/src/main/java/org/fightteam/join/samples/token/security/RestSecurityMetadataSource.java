@@ -5,14 +5,12 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- *
  * 权限资源
  *
  * @author excalibur
@@ -27,11 +25,11 @@ public class RestSecurityMetadataSource implements FilterInvocationSecurityMetad
         Set<ConfigAttribute> configAttributes = new HashSet<>();
         ConfigAttribute configAttribute = new SecurityConfig("ADMIN");
         configAttributes.add(configAttribute);
-        requestMap.put(requestMatcher,configAttributes);
+        requestMap.put(requestMatcher, configAttributes);
     }
+
     /**
      * 权限定义
-     *
      *
      * @param object
      * @return

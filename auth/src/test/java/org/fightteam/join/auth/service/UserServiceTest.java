@@ -16,7 +16,7 @@ public class UserServiceTest extends DataIntegrationTest {
 
 
     @Test
-    public void test01(){
+    public void test01() {
         System.out.println(permissionService.getAllURLResourcePermission());
     }
 }

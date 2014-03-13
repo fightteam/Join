@@ -17,27 +17,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UserController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String users(){
+    public String users() {
         return "users";
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
-    public String roles(){
+    public String roles() {
         return "roles";
     }
 
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
-    public String permissions(){
+    public String permissions() {
         return "permissions";
     }
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
-    public String resources(){
+    public String resources() {
         return "resources";
     }
 
     @RequestMapping(value = "/operations", method = RequestMethod.GET)
-    public String operations(){
+    public String operations() {
         return "operations";
     }
 }

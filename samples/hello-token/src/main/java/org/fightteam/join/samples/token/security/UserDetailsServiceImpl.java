@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
         list.add(grantedAuthority);
-        UserDetails userDetails = new User("faith","123456",list);
+        UserDetails userDetails = new User("faith", "123456", list);
         return userDetails;
     }
 }
