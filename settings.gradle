@@ -16,7 +16,8 @@ def String[] samples = [
         'hello-token',
         'hello-filter',
         'hello-oauth2',
-        "hello-rest"
+        "hello-rest",
+        "hello-test"
 ]
 include modules
 
