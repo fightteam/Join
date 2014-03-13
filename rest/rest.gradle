@@ -9,7 +9,7 @@ dependencies {
     compile(project(":join-dao"), optional)
 
 
-    "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
     compile "joda-time:joda-time:$jodaVersion"
     compile "org.springframework.data:spring-data-rest-webmvc:$springDataRestVersion"
