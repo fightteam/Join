@@ -121,6 +121,7 @@ configure(rootProject) {
         options.overview = "src/api/overview.html"
         options.splitIndex = true
         options.encoding = "UTF-8"
+        options.locale = "en_US"
         options.linksOffline "http://docs.oracle.com/javase/6/docs/api/", "http://docs.oracle.com/javase/6/docs/api/"
         options.linksOffline "http://docs.spring.io/spring/docs/4.0.0.RELEASE/javadoc-api/", "http://docs.spring.io/spring/docs/4.0.0.RELEASE/javadoc-api/"
         options.linksOffline "http://docs.spring.io/spring-data/data-commons/docs/1.7.0.M1/api/", "http://docs.spring.io/spring-data/data-commons/docs/1.7.0.M1/api/"
