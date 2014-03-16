@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * jodaTime json输出格式
- * <p/>
+ *
  * 以毫秒输出
  *
  * @author faith
