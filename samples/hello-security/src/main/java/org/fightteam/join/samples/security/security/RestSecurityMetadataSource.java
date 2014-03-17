@@ -21,11 +21,19 @@ public class RestSecurityMetadataSource implements FilterInvocationSecurityMetad
     private final Map<RequestMatcher, Collection<ConfigAttribute>> requestMap = new HashMap<>();
 
     {
+        RequestMatcher indexMatcher = new AntPathRequestMatcher("/", null);
+        Set<ConfigAttribute> cas = new HashSet<>();
+        ConfigAttribute configAttribute = new SecurityConfig("ADMIN");
+        cas.add(configAttribute);
+        requestMap.put(indexMatcher, cas);
+
         RequestMatcher requestMatcher = new AntPathRequestMatcher("/**", null);
         Set<ConfigAttribute> configAttributes = new HashSet<>();
-        ConfigAttribute configAttribute = new SecurityConfig("ADMIN");
+        configAttribute = new SecurityConfig("ADMIN");
         configAttributes.add(configAttribute);
         requestMap.put(requestMatcher, configAttributes);
+
+
     }
 
     /**
