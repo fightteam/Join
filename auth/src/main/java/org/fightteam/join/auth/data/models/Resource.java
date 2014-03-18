@@ -17,16 +17,13 @@ import java.util.List;
  */
 @Entity
 public class Resource extends AbstractEntity<Long> {
+
     private String name;
     private String title;
-    @Enumerated
-    private ResourceType type;
     private String description;
-
-    private boolean hasAuthority = false;
     private boolean enable = true;
     // 本资源的类型
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private ResourceType resourceType;
 
     // 本资源中的权限
@@ -49,28 +46,12 @@ public class Resource extends AbstractEntity<Long> {
         this.title = title;
     }
 
-    public ResourceType getType() {
-        return type;
-    }
-
-    public void setType(ResourceType type) {
-        this.type = type;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isHasAuthority() {
-        return hasAuthority;
-    }
-
-    public void setHasAuthority(boolean hasAuthority) {
-        this.hasAuthority = hasAuthority;
     }
 
     public boolean isEnable() {

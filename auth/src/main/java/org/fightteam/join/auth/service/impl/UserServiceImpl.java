@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
  * @since 0.0.1
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
@@ -100,5 +103,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.isAccountNonLocked(),
                 list);
         return userDetails;
+    }
+
+    @Override
+    public boolean isUsernameExists(String username) {
+        return false;
+    }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        return false;
+    }
+
+    @Override
+    public User registerUser(User user) {
+        return null;
     }
 }

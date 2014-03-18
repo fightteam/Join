@@ -1,28 +1,21 @@
 package org.fightteam.join.samples.security;
 
-import org.fightteam.join.samples.security.security.RestSecurityMetadataSource;
-import org.fightteam.join.samples.security.security.UserDetailsServiceImpl;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.vote.AffirmativeBased;
-import org.springframework.security.access.vote.AuthenticatedVoter;
-import org.springframework.security.access.vote.RoleVoter;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.cache.NullUserCache;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author excalibur
@@ -32,6 +25,9 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    @Qualifier("userDetailsServiceImpl")
+    private UserDetailsService userDetailsService;
     /**
      * 主要配置哪里载入用户信息
      * 包括信息的验证方式等等
@@ -43,16 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 在内存中创建一个用户
 //        常用数据库来保持用户
-
-        auth.userDetailsService(new UserDetailsServiceImpl());
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        auth.authenticationProvider(provider);
     }
 
 
-    @Bean
-    @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        return super.userDetailsServiceBean();
-    }
+
 
     /**
      * 主要配置哪里录入信息
@@ -70,26 +63,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         DigestAuthenticationFilter digestAuthenticationFilter = new DigestAuthenticationFilter();
         digestAuthenticationFilter.setAuthenticationEntryPoint(digestAuthenticationEntryPoint);
-        digestAuthenticationFilter.setUserDetailsService(userDetailsServiceBean());
+        digestAuthenticationFilter.setUserDetailsService(userDetailsService);
 
 
         UserCache userCache = new NullUserCache();
         digestAuthenticationFilter.setUserCache(userCache);
-
-
-        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
-        filterSecurityInterceptor.setSecurityMetadataSource(new RestSecurityMetadataSource());
-        List<AccessDecisionVoter> decisionVoters = new ArrayList<>();
-        // 角色投票器
-        RoleVoter roleVoter = new RoleVoter();
-        decisionVoters.add(roleVoter);
-        //
-        AuthenticatedVoter authenticatedVoter = new AuthenticatedVoter();
-        decisionVoters.add(authenticatedVoter);
-
-        AffirmativeBased affirmativeBased = new AffirmativeBased(decisionVoters);
-        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased);
-        filterSecurityInterceptor.setAuthenticationManager(this.authenticationManagerBean());
 
 
         http.httpBasic()
@@ -97,11 +75,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(digestAuthenticationFilter, BasicAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(digestAuthenticationEntryPoint)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        http.authorizeRequests().antMatchers("/**").hasAnyRole("ADMIN");
     }
 
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+
+    }
 }

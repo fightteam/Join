@@ -1,5 +1,9 @@
 package org.fightteam.join.auth.service;
 
+import org.fightteam.join.auth.SpringTest;
+import org.fightteam.join.auth.data.models.Operation;
+import org.fightteam.join.auth.data.models.Permission;
+import org.fightteam.join.auth.data.models.Resource;
 import org.fightteam.join.test.DataIntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +20,8 @@ import java.util.LinkedHashMap;
  * @author faith
  * @since 0.0.1
  */
-public class PermissionServiceTest extends DataIntegrationTest {
+public class PermissionServiceTest extends SpringTest {
+
     @Autowired
     private PermissionService permissionService;
 
@@ -28,8 +33,17 @@ public class PermissionServiceTest extends DataIntegrationTest {
     }
 
     @Test
-    public void testGetAllURLResourcePermission() throws Exception {
-        LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map = permissionService.getAllURLResourcePermission();
-        System.out.println(map);
+    public void testAddPermission() throws Exception {
+        Permission permission = new Permission();
+        permission.setName("ssss");
+        permission.setEnable(true);
+
+        Operation operation = new Operation();
+        operation.setId(1L);
+
+        Resource resource = new Resource();
+        resource.setId(1L);
+
+        permissionService.addPermission(permission, operation, resource);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 权限业务逻辑接口
@@ -18,11 +19,11 @@ import java.util.LinkedHashMap;
 public interface PermissionService {
 
     /**
-     * 获取所有URL权限
+     * 获取所有权限
      *
      * @return
      */
-    LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> getAllURLResourcePermission();
+    List<Permission> findPermissions();
 
     /**
      * 增加权限
