@@ -19,7 +19,7 @@ public class MatcherTypeTest {
 
     @Test
     public void test02(){
-        MatcherType matcherType = MatcherType.ciRegex.
-        System.out.println(MatcherType m);
+        //MatcherType matcherType = MatcherType.ciRegex.
+        //System.out.println(MatcherType m);
     }
 }
