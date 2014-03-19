@@ -4,6 +4,16 @@
 
 ### 什么是RBAC？
 
+#### 设计实现
+
+权限来源于操作（operation）与资源（resource），加载权限配置来源于权限许可（permission）和角色（role）
+
+permission->operation,resource
+
+spring security->permission，role
+
+user->role-->roleGroup,permission-->permissionGroup
+
 ### 对象模型
 
 ### 权限配置

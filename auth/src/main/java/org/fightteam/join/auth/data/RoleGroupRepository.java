@@ -10,5 +10,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author faith
  * @since 0.0.1
  */
-public interface RoleGroupRepository extends PagingAndSortingRepository<RoleGroup, Long> {
+public interface RoleGroupRepository extends JpaRepository<RoleGroup, Long> {
 }

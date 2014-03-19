@@ -23,14 +23,14 @@ public interface PermissionService {
      *
      * @return
      */
-    List<Permission> findPermissions();
+    List<Permission> findAll();
 
     /**
      * 增加权限
      *
      * @param permission
-     * @param operation
-     * @param resource
+     * @param operationId
+     * @param resourceId
      */
-    void addPermission(Permission permission, Operation operation, Resource resource);
+    void addPermission(Permission permission, Long operationId, Long resourceId);
 }

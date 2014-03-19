@@ -38,12 +38,8 @@ public class PermissionServiceTest extends SpringTest {
         permission.setName("ssss");
         permission.setEnable(true);
 
-        Operation operation = new Operation();
-        operation.setId(1L);
 
-        Resource resource = new Resource();
-        resource.setId(1L);
 
-        permissionService.addPermission(permission, operation, resource);
+        permissionService.addPermission(permission, 1L, 1L);
     }
 }

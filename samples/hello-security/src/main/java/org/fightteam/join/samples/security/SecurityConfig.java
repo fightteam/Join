@@ -1,5 +1,13 @@
 package org.fightteam.join.samples.security;
 
+import org.fightteam.join.auth.config.HttpBasicSecurityConfig;
+import org.fightteam.join.auth.data.models.Operation;
+import org.fightteam.join.auth.data.models.Permission;
+import org.fightteam.join.auth.data.models.Resource;
+import org.fightteam.join.auth.data.models.Role;
+import org.fightteam.join.auth.service.PermissionService;
+import org.fightteam.join.auth.service.ResourceService;
+import org.fightteam.join.auth.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +17,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.MatcherType;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +25,8 @@ import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+
+import java.util.List;
 
 /**
  * @author excalibur
@@ -28,6 +39,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private PermissionService permissionService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private ResourceService resourceService;
     /**
      * 主要配置哪里载入用户信息
      * 包括信息的验证方式等等
@@ -77,7 +97,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/**").hasAnyRole("ADMIN");
+        List<Permission> permissions = permissionService.findAll();
+
+        List<Role> roles = roleService.findAll();
+
+        List<Resource> resources = resourceService.findAll();
+
+        for(Resource resource:resources){
+            //MatcherType.
+            //http.authorizeRequests().requestMatchers(resource.getName()).hasAuthority("a");
+        }
+
+        for (Permission permission:permissions){
+            Resource resource = permission.getResource();
+            Operation operation = permission.getOperation();
+
+            http.authorizeRequests().antMatchers().hasAuthority(permission.getName());
+        }
+        http.authorizeRequests().anyRequest().authenticated();
     }
 
 

@@ -2,6 +2,8 @@ package org.fightteam.join.auth.service;
 
 import org.fightteam.join.auth.data.models.Resource;
 
+import java.util.List;
+
 /**
  * 资源业务逻辑接口
  *
@@ -9,6 +11,7 @@ import org.fightteam.join.auth.data.models.Resource;
  * @since 0.0.1
  */
 public interface ResourceService {
+
     Resource add(Resource resource);
 
     Resource update(Resource resource);
@@ -18,4 +21,6 @@ public interface ResourceService {
     Resource findById(Long id);
 
     Resource findByTitle(String title);
+
+    List<Resource> findAll();
 }

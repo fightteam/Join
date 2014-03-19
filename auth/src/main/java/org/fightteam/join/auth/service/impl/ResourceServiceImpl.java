@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * [description]
  *
@@ -46,5 +48,11 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public Resource findByTitle(String title) {
         return resourceRepository.findByTitle(title);
+    }
+
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+    @Override
+    public List<Resource> findAll() {
+        return resourceRepository.findAll();
     }
 }

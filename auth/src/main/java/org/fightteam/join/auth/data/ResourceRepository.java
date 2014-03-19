@@ -10,7 +10,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author faith
  * @since 0.0.1
  */
-public interface ResourceRepository extends PagingAndSortingRepository<Resource, Long> {
+public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     Resource findByTitle(String title);
 }

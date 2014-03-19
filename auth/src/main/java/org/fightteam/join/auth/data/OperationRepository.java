@@ -10,7 +10,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author faith
  * @since 0.0.1
  */
-public interface OperationRepository extends PagingAndSortingRepository<Operation, Long> {
+public interface OperationRepository extends JpaRepository<Operation, Long> {
 
     Operation findByTitle(String title);
 }

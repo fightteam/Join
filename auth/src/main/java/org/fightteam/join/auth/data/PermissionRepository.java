@@ -10,5 +10,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author faith
  * @since 0.0.1
  */
-public interface PermissionRepository extends PagingAndSortingRepository<Permission, Long> {
+public interface PermissionRepository extends JpaRepository<Permission, Long> {
 }

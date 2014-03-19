@@ -111,12 +111,18 @@ public class PermissionServiceImpl implements PermissionService {
 
 
     @Override
-    public List<Permission> findPermissions() {
-        return null;
+    public List<Permission> findAll() {
+        return permissionRepository.findAll();
     }
 
     @Override
-    public void addPermission(Permission permission, Operation operation, Resource resource) {
+    public void addPermission(Permission permission, Long operationId, Long resourceId) {
+        Operation operation = new Operation();
+        operation.setId(operationId);
+
+        Resource resource = new Resource();
+        resource.setId(resourceId);
+
         permission.setOperation(operation);
         permission.setResource(resource);
         permissionRepository.save(permission);
