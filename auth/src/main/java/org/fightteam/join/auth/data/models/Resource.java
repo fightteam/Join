@@ -1,6 +1,7 @@
 package org.fightteam.join.auth.data.models;
 
 import org.fightteam.join.dao.entity.AbstractEntity;
+import org.springframework.security.config.http.MatcherType;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,6 +26,9 @@ public class Resource extends AbstractEntity<Long> {
     // 本资源的类型
     @Enumerated
     private ResourceType resourceType;
+
+    @Enumerated
+    private MatcherType matcherType;
 
     // 本资源中的权限
     @OneToMany(mappedBy = "resource")
@@ -76,5 +80,13 @@ public class Resource extends AbstractEntity<Long> {
 
     public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
+    }
+
+    public MatcherType getMatcherType() {
+        return matcherType;
+    }
+
+    public void setMatcherType(MatcherType matcherType) {
+        this.matcherType = matcherType;
     }
 }

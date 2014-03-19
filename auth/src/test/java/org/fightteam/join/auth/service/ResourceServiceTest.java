@@ -5,6 +5,7 @@ import org.fightteam.join.auth.data.models.Resource;
 import org.fightteam.join.auth.data.models.ResourceType;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.http.MatcherType;
 
 /**
  * [description]
@@ -23,6 +24,7 @@ public class ResourceServiceTest extends SpringTest {
         resource.setEnable(true);
         resource.setResourceType(ResourceType.URL);
         resource.setName("/login");
+        resource.setMatcherType(MatcherType.ant);
         resourceService.add(resource);
     }
 }

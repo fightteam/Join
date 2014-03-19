@@ -1,16 +1,14 @@
 package org.fightteam.join.samples.security;
 
 import org.fightteam.join.auth.config.HttpBasicSecurityConfig;
-import org.fightteam.join.auth.data.models.Operation;
-import org.fightteam.join.auth.data.models.Permission;
-import org.fightteam.join.auth.data.models.Resource;
-import org.fightteam.join.auth.data.models.Role;
+import org.fightteam.join.auth.data.models.*;
 import org.fightteam.join.auth.service.PermissionService;
 import org.fightteam.join.auth.service.ResourceService;
 import org.fightteam.join.auth.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -111,8 +109,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         for (Permission permission:permissions){
             Resource resource = permission.getResource();
             Operation operation = permission.getOperation();
-
-            http.authorizeRequests().antMatchers().hasAuthority(permission.getName());
+            if (resource.getResourceType() == ResourceType.URL){
+//                http.authorizeRequests().antMatchers(HttpMethod.valueOf(operation.getName()), resource.getName())
+//                        .hasAuthority()
+            }
+           // http.authorizeRequests().().hasAuthority(permission.getName());
         }
         http.authorizeRequests().anyRequest().authenticated();
     }
@@ -120,6 +121,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+        List<Resource> resources = resourceService.findAll();
+        for(Resource resource:resources){
+            if (resource.getResourceType() == ResourceType.URL){
 
+            }
+        }
     }
 }

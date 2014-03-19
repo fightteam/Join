@@ -14,7 +14,9 @@ public class MatcherTypeTest {
     @Test
     public void test01(){
 
-        System.out.println(MatcherType.valueOf("/**"));
+        System.out.println(MatcherType.ciRegex);
+        System.out.println(MatcherType.ant);
+        System.out.println(MatcherType.regex);
     }
 
     @Test
