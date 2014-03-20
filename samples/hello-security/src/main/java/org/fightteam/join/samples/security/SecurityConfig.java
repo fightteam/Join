@@ -1,16 +1,16 @@
 package org.fightteam.join.samples.security;
 
 import org.fightteam.join.auth.config.HttpBasicSecurityConfig;
-import org.fightteam.join.auth.data.models.Operation;
-import org.fightteam.join.auth.data.models.Permission;
-import org.fightteam.join.auth.data.models.Resource;
-import org.fightteam.join.auth.data.models.Role;
+import org.fightteam.join.auth.data.models.*;
 import org.fightteam.join.auth.service.PermissionService;
 import org.fightteam.join.auth.service.ResourceService;
 import org.fightteam.join.auth.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 import java.util.List;
 
@@ -107,19 +108,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             //MatcherType.
             //http.authorizeRequests().requestMatchers(resource.getName()).hasAuthority("a");
         }
-
         for (Permission permission:permissions){
             Resource resource = permission.getResource();
             Operation operation = permission.getOperation();
 
-            http.authorizeRequests().antMatchers().hasAuthority(permission.getName());
+            if (resource.getResourceType() == ResourceType.URL){
+                if (resource.getMatcherType() == MatcherType.ant){
+                    //if (permission.getName())
+                    http.authorizeRequests().antMatchers(HttpMethod.valueOf(operation.getName()), resource.getName()).access(permission.getName());
+                }else if (resource.getMatcherType() == MatcherType.regex){
+                    http.authorizeRequests().antMatchers(HttpMethod.valueOf(operation.getName()), resource.getName()).access(permission.getName());
+                }else if (resource.getMatcherType() == MatcherType.ciRegex){
+                    RegexRequestMatcher regex = new RegexRequestMatcher(resource.getName(), operation.getName(), true);
+                    http.authorizeRequests().requestMatchers(regex).access(permission.getName());
+                }
+            }
         }
-        http.authorizeRequests().anyRequest().authenticated();
     }
 
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+        List<Resource> resources = resourceService.findAll();
 
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

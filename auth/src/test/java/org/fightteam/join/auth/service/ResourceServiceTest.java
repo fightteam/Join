@@ -22,7 +22,10 @@ public class ResourceServiceTest extends SpringTest {
         Resource resource = new Resource();
         resource.setEnable(true);
         resource.setResourceType(ResourceType.URL);
-        resource.setName("/login");
+        resource.setName("/roles");
         resourceService.add(resource);
+
+
     }
+
 }

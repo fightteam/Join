@@ -1,7 +1,12 @@
 package org.fightteam.join.auth.common;
 
+import org.fightteam.join.auth.web.controller.UserController;
 import org.junit.Test;
 import org.springframework.security.config.http.MatcherType;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * [description]
@@ -19,7 +24,16 @@ public class MatcherTypeTest {
 
     @Test
     public void test02(){
-        //MatcherType matcherType = MatcherType.ciRegex.
-        //System.out.println(MatcherType m);
+        Pattern pattern = Pattern.compile("");
+        pattern.matcher("192.168.103.1");
+    }
+
+    @Test
+    public void test03(){
+        Method[] methods = UserController.class.getMethods();
+
+        for (Method method:methods){
+            System.out.println(method.getName());
+        }
     }
 }
