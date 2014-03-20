@@ -96,7 +96,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(digestAuthenticationFilter, BasicAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(digestAuthenticationEntryPoint)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().csrf().disable();
 
         List<Permission> permissions = permissionService.findAll();
 
