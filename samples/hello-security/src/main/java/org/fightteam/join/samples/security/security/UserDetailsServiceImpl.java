@@ -28,7 +28,7 @@ import java.util.Set;
  */
 @Service
 @Transactional
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService , UserService{
 
     @Autowired
     private UserRepository userRepository;
@@ -47,5 +47,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserDetails userDetails = new User("faith","123456",
                 grantedAuthorities);
         return userDetails;
+    }
+
+    @Override
+    public void add(String name) {
+
+    }
+
+    @Override
+    public void update(int a) {
+
+    }
+
+    @Override
+    public void delete(String c) {
+
+    }
+
+    @Override
+    public void find(String a) {
+
+    }
+
+    @Override
+    public void find(String a, String b) {
+
     }
 }

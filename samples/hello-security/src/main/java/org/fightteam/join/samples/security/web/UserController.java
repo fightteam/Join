@@ -75,7 +75,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
-
     public String resources() {
         return "resources";
     }
