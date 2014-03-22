@@ -26,10 +26,8 @@ public class Resource extends AbstractEntity<Long> {
     // 本资源的类型
     @Enumerated
     private ResourceType resourceType;
-
     @Enumerated
-    private MatcherType matcherType;
-
+    private MatcherType matcherType = MatcherType.ant;
     // 本资源中的权限
     @OneToMany(mappedBy = "resource")
     private List<Permission> permissions = new ArrayList<>();

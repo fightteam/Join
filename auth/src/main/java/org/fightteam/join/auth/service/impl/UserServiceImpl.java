@@ -2,19 +2,21 @@ package org.fightteam.join.auth.service.impl;
 
 import org.fightteam.join.auth.data.UserRepository;
 import org.fightteam.join.auth.data.models.*;
+import org.fightteam.join.auth.data.models.User;
 import org.fightteam.join.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户业务逻辑实现
@@ -40,44 +42,46 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 载入用户信息
-        User user = userRepository.findByUsername(username);
+        System.out.println("==========loadUserByUsername============");
+        System.out.println("username = [" + username + "]");
+
+        org.fightteam.join.auth.data.models.User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("couldn't find user by username:" + username);
         }
-        List<GrantedAuthority> list = new ArrayList<>();
-        // 获取权限
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+
         List<Permission> permissions = user.getPermissions();
-        for (Permission permission : permissions) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
-            list.add(grantedAuthority);
-            // 获取权限组
-            PermissionGroup permissionGroup = permission.getPermissionGroup();
-            if (permissionGroup != null) {
-                permissionGroup.getPermissions();
-                permissionGroup.getParent();
-            }
-        }
-        // 获取角色
         List<Role> roles = user.getRoles();
-        // 获取角色组
-        for (Role role : roles) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
-            list.add(grantedAuthority);
-            // 获取角色组,有可能没有
-            RoleGroup roleGroup = role.getRoleGroup();
-            if (roleGroup != null) {
-                // 构造角色组权限，实质还是角色
-                RoleGroup parent = roleGroup.getParent();
-                List<Role> children = parent.getRoles();
 
-                for (Role r : children) {
-                    grantedAuthority = new SimpleGrantedAuthority(r.getName());
-                    list.add(grantedAuthority);
-                }
+        Set<Permission> permissionSet = new HashSet<>();
+        Set<Role> roleSet = new HashSet<>();
 
-            }
+        for(Permission permission:permissions){
+            permissionSet.add(permission);
+            PermissionGroup permissionGroup = permission.getPermissionGroup();
+            getPermissions(permissionGroup, permissionSet);
+
         }
+        for (Role role:roles){
+            roleSet.add(role);
+            RoleGroup roleGroup = role.getRoleGroup();
+            getRoles(roleGroup, roleSet);
+        }
+
+        for(Permission permission:permissionSet){
+            AuthorityUtils.commaSeparatedStringToAuthorityList(permission.getName());
+        }
+
+        for(Role role:roleSet){
+            grantedAuthorities.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(role.getName()));
+        }
+
+        for(Permission permission:permissionSet){
+            grantedAuthorities.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(permission.getName()));
+        }
+
+
 
         /**
          *    * @param username the username presented to the
@@ -95,14 +99,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
          *        if they presented the correct username and password and the user
          *        is enabled. Not null.
          */
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(),
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 user.isEnabled(),
-                user.isAccountNonExpired(),
+                user.isAccountNonExpired() ,
                 user.isCredentialsNonExpired(),
                 user.isAccountNonLocked(),
-                list);
+                grantedAuthorities);
         return userDetails;
+    }
+
+    private Set<Permission> getPermissions(PermissionGroup permissionGroup, Set<Permission> permissionSet){
+
+        if (permissionGroup != null){
+            permissionSet.addAll(permissionGroup.getPermissions());
+            PermissionGroup parent = permissionGroup.getParent();
+            permissionSet.addAll(getPermissions(parent, permissionSet));
+        }
+        return permissionSet;
+    }
+
+    private Set<Role> getRoles(RoleGroup roleGroup, Set<Role> roleSet){
+
+        if (roleGroup != null){
+            roleSet.addAll(roleGroup.getRoles());
+            RoleGroup parent = roleGroup.getParent();
+            roleSet.addAll(getRoles(parent, roleSet));
+        }
+        return roleSet;
     }
 
     @Override
@@ -117,6 +140,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User registerUser(User user) {
-        return null;
+
+        return userRepository.save(user);
     }
 }

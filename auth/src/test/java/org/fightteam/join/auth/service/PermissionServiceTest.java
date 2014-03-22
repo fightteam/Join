@@ -35,11 +35,11 @@ public class PermissionServiceTest extends SpringTest {
     @Test
     public void testAddPermission() throws Exception {
         Permission permission = new Permission();
-        permission.setName("ssss");
+        permission.setName("hasAuthority('VIEWROLES')");
         permission.setEnable(true);
 
 
 
-        permissionService.addPermission(permission, 1L, 1L);
+        permissionService.addPermission(permission, 1L, 3L);
     }
 }
