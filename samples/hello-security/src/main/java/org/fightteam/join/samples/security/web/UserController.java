@@ -3,6 +3,7 @@ package org.fightteam.join.samples.security.web;
 import org.fightteam.join.auth.data.models.Operation;
 import org.fightteam.join.auth.data.models.Resource;
 import org.fightteam.join.auth.service.*;
+import org.fightteam.join.samples.security.security.User2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -39,6 +40,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private User2Service user2Service;
 
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -90,6 +94,7 @@ public class UserController {
 
     @RequestMapping(value = "/operations", method = RequestMethod.GET)
     public String operations() {
+        user2Service.add("aaaaaa");
         return "operations";
     }
 
@@ -100,4 +105,6 @@ public class UserController {
         operationService.add(operation);
         return "operations";
     }
+
+
 }

@@ -6,7 +6,7 @@ package org.fightteam.join.samples.security.security;
  * @author faith
  * @since 0.0.1
  */
-public interface UserService {
+public interface User2Service {
 
     void add(String name);
 

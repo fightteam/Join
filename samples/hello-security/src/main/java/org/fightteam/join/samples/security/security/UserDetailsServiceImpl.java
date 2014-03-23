@@ -1,13 +1,8 @@
 package org.fightteam.join.samples.security.security;
 
 import org.fightteam.join.auth.data.UserRepository;
-import org.fightteam.join.auth.data.models.Permission;
-import org.fightteam.join.auth.data.models.PermissionGroup;
-import org.fightteam.join.auth.data.models.Role;
-import org.fightteam.join.auth.data.models.RoleGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,7 +21,7 @@ import java.util.Set;
  */
 @Service
 @Transactional
-public class UserDetailsServiceImpl implements UserDetailsService , UserService{
+public class UserDetailsServiceImpl implements UserDetailsService , User2Service {
 
     @Autowired
     private UserRepository userRepository;

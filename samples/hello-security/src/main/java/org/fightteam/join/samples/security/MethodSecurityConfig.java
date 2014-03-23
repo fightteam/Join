@@ -47,7 +47,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
         Map<String, List<ConfigAttribute>> methodMap = new HashMap<>();
         List<ConfigAttribute> configAttributes = new ArrayList<>();
         configAttributes.add(new SecurityConfig("ROLE_VIEWUSERS2"));
-        methodMap.put("org.fightteam.join.samples.security.security.UserService.add",configAttributes);
+        methodMap.put("org.fightteam.join.samples.security.security.User2Service.add",configAttributes);
         MethodSecurityMetadataSource metadataSource = new MapBasedMethodSecurityMetadataSource(methodMap);
 
         return metadataSource;
