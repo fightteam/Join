@@ -4,10 +4,7 @@ import org.fightteam.join.dao.entity.AbstractEntity;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +15,14 @@ import java.util.List;
  * @since 0.0.1
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "userType")
+@DiscriminatorValue("user")
 public class User extends AbstractEntity<Long> {
 
     private String username;
     private String password;
     private String email;
-    private String name;
     // 账号是否过期(true 没过期 false 过期)
     private boolean accountNonExpired = true;
     // 账号 是否锁定(true 没锁定 false 锁定)
@@ -98,14 +97,6 @@ public class User extends AbstractEntity<Long> {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public boolean isAccountNonExpired() {
