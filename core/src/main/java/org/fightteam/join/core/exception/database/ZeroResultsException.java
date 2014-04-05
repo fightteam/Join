@@ -4,7 +4,7 @@ import org.fightteam.join.core.exception.BaseException;
 
 /**
  * 数据查询结果为0
- * <p/>
+ *
  * 主要针对集合
  *
  * @author excalibur

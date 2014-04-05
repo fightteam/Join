@@ -2,7 +2,7 @@ package org.fightteam.join.core.common;
 
 /**
  * 公共系统常量类
- * <p/>
+ *
  * 提供一些系统中常用的常量
  *
  * @author faith

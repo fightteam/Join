@@ -2,7 +2,7 @@ package org.fightteam.join.core.exception;
 
 /**
  * 基础异常类
- * <p/>
+ *
  * 方便最得意异常
  *
  * @author faith
@@ -12,7 +12,7 @@ public class BaseException extends Exception {
 
     /**
      * 基于protected 子类可以继承
-     * <p/>
+     *
      * 用于记录错误编码等等
      * 抛出的地方设置
      */

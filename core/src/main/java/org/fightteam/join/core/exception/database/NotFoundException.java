@@ -4,7 +4,7 @@ import org.fightteam.join.core.exception.BaseException;
 
 /**
  * 数据查询没有结果异常
- * <p/>
+ *
  * 这种异常针对单数据对象
  *
  * @author excalibur
