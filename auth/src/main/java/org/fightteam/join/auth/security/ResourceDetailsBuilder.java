@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 
 /**
  * 权限资源构造类
- * <p/>
+ *
  * 该类支持基于特定类型的权限构建资源，该资源用来支持系统权限拦截
  *
  * @author faith

@@ -20,7 +20,7 @@ import java.util.Set;
 
 /**
  * 用户业务逻辑实现
- * <p/>
+ *
  * 实现了Spring security的UserDetailsService
  *
  * @author faith

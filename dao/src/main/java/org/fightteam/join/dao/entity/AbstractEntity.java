@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  * 抽象对象
- * <p/>
+ *
  * 覆写了equals、hashCode
  *
  * @author faith
