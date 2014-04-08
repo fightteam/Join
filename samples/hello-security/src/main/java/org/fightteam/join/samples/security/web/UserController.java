@@ -1,6 +1,5 @@
 package org.fightteam.join.samples.security.web;
 
-import org.fightteam.join.auth.data.models.Operation;
 import org.fightteam.join.auth.data.models.Resource;
 import org.fightteam.join.auth.service.*;
 import org.fightteam.join.samples.security.security.User2Service;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
