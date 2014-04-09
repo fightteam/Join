@@ -8,17 +8,7 @@ def String[] modules = [
         'rest'
 ]
 
-def String[] samples = [
-        'hello-mvc',
-        'hello-security',
-        'hello-jpa',
-        'hello-log',
-        'hello-token',
-        'hello-filter',
-        'hello-oauth2',
-        "hello-rest",
-        "hello-test"
-]
+
 include modules
 
 modules.each { name ->
@@ -30,15 +20,4 @@ modules.each { name ->
     p.buildFileName = "${name}.gradle"
 }
 
-include samples
-samples.each { name ->
-    def p = findProject(":${name}")
-    def fullName = name.replaceAll('/', '')
-    p.name = "join-samples-${fullName}"
-    p.projectDir = new File(settingsDir, "samples/${name}");
-    if (!p.buildFile.exists()) {
-        def buildFile = "${fullName}"
-        p.buildFileName = "${buildFile}.gradle"
-    }
-}
 rootProject.name = "join"
