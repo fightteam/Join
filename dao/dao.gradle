@@ -17,4 +17,5 @@ dependencies {
 
     // Testing
     testCompile project(":join-test")
+    testCompile "mysql:mysql-connector-java:$mysqlVersion"
 }
